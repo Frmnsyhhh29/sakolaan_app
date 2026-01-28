@@ -88,7 +88,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
 
       GoRoute(
         path: '/guru/tambah', 
-        name: 'guru',
+        name: 'guru-tambah',
         builder: (context, state) => const GuruTambahPage(),
       ),
 
