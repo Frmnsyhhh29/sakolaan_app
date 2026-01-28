@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percobaan1/screens/guru/guru_page.dart';
 import 'package:percobaan1/screens/guru/guru_tambah_page.dart';
-import 'package:percobaan1/screens/mapel/mapel_page.dart';
 
 import '../screens/auth/login_screen.dart';
 import '../screens/auth/register_screen.dart';
@@ -53,7 +52,8 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         name: 'register',
         builder: (context, state) => const RegisterScreen(),
       ),
-      
+
+      // PROTECTED ROUTES
       GoRoute(
         path: '/home',
         name: 'home',
@@ -87,15 +87,9 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       ),
 
       GoRoute(
-        path: '/guru/tambah', 
-        name: 'guru',
+        path: '/mapel/tambah', 
+        name: 'guru-tambah',
         builder: (context, state) => const GuruTambahPage(),
-      ),
-
-      GoRoute(
-        path: '/mapel', 
-        name: 'mapel',
-        builder: (context, state) => const MapelPage(),
       ),
 
       // GoRoute(path: '/nilai', name: 'nilai', builder:(context, state) => const NilaiPage(),)
