@@ -1,4 +1,4 @@
-// lib/screens/siswa/siswa_detail_page.dart
+// lib/screens/siswa/siswa_edit_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -6,7 +6,7 @@ import '../../models/siswa_model.dart';
 import '../../providers/siswa_provider.dart';
 
 class SiswaEditPage extends ConsumerStatefulWidget {
-  final int siswaId;
+  final String siswaId; // ✅ UBAH dari int ke String
 
   const SiswaEditPage({
     super.key,
@@ -14,10 +14,10 @@ class SiswaEditPage extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<SiswaEditPage> createState() => _SiswaDetailPageState();
+  ConsumerState<SiswaEditPage> createState() => _SiswaEditPageState();
 }
 
-class _SiswaDetailPageState extends ConsumerState<SiswaEditPage> {
+class _SiswaEditPageState extends ConsumerState<SiswaEditPage> {
   late TextEditingController nisController;
   late TextEditingController namaController;
   late TextEditingController kelasController;
@@ -71,6 +71,7 @@ class _SiswaDetailPageState extends ConsumerState<SiswaEditPage> {
     );
 
     final siswaNotifier = ref.read(siswaProvider.notifier);
+    // ✅ PERBAIKI: siswa.id sudah String, langsung kirim
     final success = await siswaNotifier.updateSiswa(siswa.id!, updatedSiswa);
 
     if (success) {
@@ -87,11 +88,11 @@ class _SiswaDetailPageState extends ConsumerState<SiswaEditPage> {
   Widget build(BuildContext context) {
     final siswaState = ref.watch(siswaProvider);
 
-    // Cari siswa berdasarkan ID
+    // ✅ PERBAIKI: Cari siswa berdasarkan ID (String comparison)
     final siswa = siswaState.siswaList.firstWhere(
-      (s) => s.id == widget.siswaId,
+      (s) => s.id == widget.siswaId, // ✅ String == String
       orElse: () => Siswa(
-        id: 0,
+        id: '0', // ✅ UBAH dari int 0 ke String '0'
         nis: '',
         nama: 'Tidak ditemukan',
         kelas: '',
@@ -101,16 +102,17 @@ class _SiswaDetailPageState extends ConsumerState<SiswaEditPage> {
     );
 
     // Set initial values
-    if (siswa.id != 0 && nisController.text.isEmpty) {
+    // ✅ PERBAIKI: Cek dengan String '0'
+    if (siswa.id != '0' && nisController.text.isEmpty) {
       nisController.text = siswa.nis;
       namaController.text = siswa.nama;
-      kelasController.text = siswa.kelas;
+      kelasController.text = siswa.kelas ?? ''; // ✅ PERBAIKI: Handle nullable
       alamatController.text = siswa.alamat;
       noHpController.text = siswa.noHp;
     }
 
-    // Kalau data tidak ditemukan
-    if (siswa.id == 0) {
+    // ✅ PERBAIKI: Cek dengan String '0'
+    if (siswa.id == '0') {
       return Scaffold(
         backgroundColor: Colors.grey.shade50,
         body: Center(
@@ -154,7 +156,7 @@ class _SiswaDetailPageState extends ConsumerState<SiswaEditPage> {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05), // ✅ PERBAIKI
                   blurRadius: 10,
                   offset: const Offset(0, 2),
                 ),
@@ -246,7 +248,7 @@ class _SiswaDetailPageState extends ConsumerState<SiswaEditPage> {
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
+                          color: Colors.black.withValues(alpha: 0.05), // ✅ PERBAIKI
                           blurRadius: 10,
                           offset: const Offset(0, 2),
                         ),

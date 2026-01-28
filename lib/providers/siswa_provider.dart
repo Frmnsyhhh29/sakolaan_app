@@ -20,6 +20,11 @@ class SiswaNotifier extends StateNotifier<SiswaState> {
 
   SiswaNotifier(this.ref) : super(SiswaState.initial());
 
+  // ✅ TAMBAH METHOD INI - Alias untuk loadSiswa
+  Future<void> fetchSiswa() async {
+    await loadSiswa();
+  }
+
   // LOAD DATA - Ambil semua data siswa dari API
   Future<void> loadSiswa() async {
     // Set state ke loading
@@ -67,12 +72,13 @@ class SiswaNotifier extends StateNotifier<SiswaState> {
   }
 
   // UPDATE - Edit data siswa
-  Future<bool> updateSiswa(int id, Siswa siswa) async {
+  Future<bool> updateSiswa(String id, Siswa siswa) async {
     try {
       state = state.copyWith(isLoading: true);
 
       final siswaService = ref.read(siswaServiceProvider);
-      final success = await siswaService.updateSiswa(id, siswa);
+      // ✅ PERBAIKI: Parse string id ke int
+      final success = await siswaService.updateSiswa(int.parse(id), siswa);
 
       if (success) {
         // Reload data setelah berhasil update
@@ -95,12 +101,13 @@ class SiswaNotifier extends StateNotifier<SiswaState> {
   }
 
   // DELETE - Hapus siswa
-  Future<bool> deleteSiswa(int id) async {
+  Future<bool> deleteSiswa(String id) async {
     try {
       state = state.copyWith(isLoading: true);
 
       final siswaService = ref.read(siswaServiceProvider);
-      final success = await siswaService.deleteSiswa(id);
+      // ✅ PERBAIKI: Parse string id ke int
+      final success = await siswaService.deleteSiswa(int.parse(id));
 
       if (success) {
         // Reload data setelah berhasil hapus

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../models/siswa_model.dart';
+import '../../models/kelas_model.dart';
 import '../../providers/siswa_provider.dart';
+import '../../services/kelas_service.dart';
 
 class SiswaTambahPage extends ConsumerStatefulWidget {
   const SiswaTambahPage({super.key});
@@ -16,20 +18,45 @@ class _SiswaTambahPageState extends ConsumerState<SiswaTambahPage> {
   final _formKey = GlobalKey<FormState>();
   final nisController = TextEditingController();
   final namaController = TextEditingController();
-  final kelasController = TextEditingController();
   final alamatController = TextEditingController();
   final noHpController = TextEditingController();
 
   bool _isLoading = false;
+  bool _isLoadingKelas = false;
+  
+  // ✅ TAMBAHAN: Untuk dropdown kelas
+  List<Kelas> _kelasList = [];
+  String? _selectedKelasId;
+  String? _selectedJenisKelamin;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadKelas();
+  }
 
   @override
   void dispose() {
     nisController.dispose();
     namaController.dispose();
-    kelasController.dispose();
     alamatController.dispose();
     noHpController.dispose();
     super.dispose();
+  }
+
+  // ✅ TAMBAHAN: Load data kelas dari API
+  Future<void> _loadKelas() async {
+    setState(() => _isLoadingKelas = true);
+    try {
+      final kelas = await KelasService.getKelas();
+      setState(() {
+        _kelasList = kelas;
+        _isLoadingKelas = false;
+      });
+    } catch (e) {
+      setState(() => _isLoadingKelas = false);
+      _showMessage('Gagal memuat data kelas', isError: true);
+    }
   }
 
   void _showMessage(String message, {bool isError = false}) {
@@ -49,12 +76,25 @@ class _SiswaTambahPageState extends ConsumerState<SiswaTambahPage> {
       return;
     }
 
+    // ✅ Validasi kelas harus dipilih
+    if (_selectedKelasId == null) {
+      _showMessage('Silakan pilih kelas', isError: true);
+      return;
+    }
+
+    // ✅ Validasi jenis kelamin harus dipilih
+    if (_selectedJenisKelamin == null) {
+      _showMessage('Silakan pilih jenis kelamin', isError: true);
+      return;
+    }
+
     setState(() => _isLoading = true);
 
     final newSiswa = Siswa(
       nis: nisController.text.trim(),
       nama: namaController.text.trim(),
-      kelas: kelasController.text.trim(),
+      kelasId: _selectedKelasId!, // ✅ Gunakan kelas_id
+      jenisKelamin: _selectedJenisKelamin!,
       alamat: alamatController.text.trim(),
       noHp: noHpController.text.trim(),
     );
@@ -130,97 +170,27 @@ class _SiswaTambahPageState extends ConsumerState<SiswaTambahPage> {
                           ),
                           const SizedBox(height: 24),
                           
-                          // NIS & Kelas (Row untuk desktop, Column untuk mobile)
-                          if (isMobile) ...[
-                            TextFormField(
-                              controller: nisController,
-                              decoration: InputDecoration(
-                                labelText: 'NIS',
-                                hintText: 'Masukkan NIS',
-                                prefixIcon: const Icon(Icons.badge),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                filled: true,
-                                fillColor: Colors.grey.shade50,
+                          // NIS
+                          TextFormField(
+                            controller: nisController,
+                            decoration: InputDecoration(
+                              labelText: 'NIS',
+                              hintText: 'Masukkan NIS',
+                              prefixIcon: const Icon(Icons.badge),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                              keyboardType: TextInputType.number,
-                              validator: (value) {
-                                if (value == null || value.trim().isEmpty) {
-                                  return 'NIS harus diisi';
-                                }
-                                return null;
-                              },
+                              filled: true,
+                              fillColor: Colors.grey.shade50,
                             ),
-                            const SizedBox(height: 20),
-                            TextFormField(
-                              controller: kelasController,
-                              decoration: InputDecoration(
-                                labelText: 'Kelas',
-                                hintText: 'Masukkan Kelas',
-                                prefixIcon: const Icon(Icons.school),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                filled: true,
-                                fillColor: Colors.grey.shade50,
-                              ),
-                              validator: (value) {
-                                if (value == null || value.trim().isEmpty) {
-                                  return 'Kelas harus diisi';
-                                }
-                                return null;
-                              },
-                            ),
-                          ] else
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: TextFormField(
-                                    controller: nisController,
-                                    decoration: InputDecoration(
-                                      labelText: 'NIS',
-                                      hintText: 'Masukkan NIS',
-                                      prefixIcon: const Icon(Icons.badge),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      filled: true,
-                                      fillColor: Colors.grey.shade50,
-                                    ),
-                                    keyboardType: TextInputType.number,
-                                    validator: (value) {
-                                      if (value == null || value.trim().isEmpty) {
-                                        return 'NIS harus diisi';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: TextFormField(
-                                    controller: kelasController,
-                                    decoration: InputDecoration(
-                                      labelText: 'Kelas',
-                                      hintText: 'Masukkan Kelas',
-                                      prefixIcon: const Icon(Icons.school),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      filled: true,
-                                      fillColor: Colors.grey.shade50,
-                                    ),
-                                    validator: (value) {
-                                      if (value == null || value.trim().isEmpty) {
-                                        return 'Kelas harus diisi';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
+                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'NIS harus diisi';
+                              }
+                              return null;
+                            },
+                          ),
                           const SizedBox(height: 20),
                           
                           // Nama Lengkap
@@ -239,6 +209,90 @@ class _SiswaTambahPageState extends ConsumerState<SiswaTambahPage> {
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
                                 return 'Nama harus diisi';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          
+                          // ✅ DROPDOWN KELAS
+                          DropdownButtonFormField<String>(
+                            value: _selectedKelasId,
+                            decoration: InputDecoration(
+                              labelText: 'Kelas',
+                              hintText: 'Pilih kelas',
+                              prefixIcon: const Icon(Icons.school),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey.shade50,
+                            ),
+                            items: _isLoadingKelas
+                                ? []
+                                : _kelasList.map((kelas) {
+                                    return DropdownMenuItem<String>(
+                                      value: kelas.id,
+                                      child: Text('${kelas.namaKelas} - ${kelas.jurusan}'),
+                                    );
+                                  }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedKelasId = value;
+                              });
+                            },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Kelas harus dipilih';
+                              }
+                              return null;
+                            },
+                          ),
+                          if (_isLoadingKelas)
+                            const Padding(
+                              padding: EdgeInsets.only(top: 8),
+                              child: Text(
+                                'Memuat data kelas...',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                            ),
+                          const SizedBox(height: 20),
+                          
+                          // ✅ DROPDOWN JENIS KELAMIN
+                          DropdownButtonFormField<String>(
+                            value: _selectedJenisKelamin,
+                            decoration: InputDecoration(
+                              labelText: 'Jenis Kelamin',
+                              hintText: 'Pilih jenis kelamin',
+                              prefixIcon: const Icon(Icons.people),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey.shade50,
+                            ),
+                            items: const [
+                              DropdownMenuItem(
+                                value: 'L',
+                                child: Text('Laki-laki'),
+                              ),
+                              DropdownMenuItem(
+                                value: 'P',
+                                child: Text('Perempuan'),
+                              ),
+                            ],
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedJenisKelamin = value;
+                              });
+                            },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Jenis kelamin harus dipilih';
                               }
                               return null;
                             },

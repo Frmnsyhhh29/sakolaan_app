@@ -171,7 +171,7 @@ class HomeScreen extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'We,come Baraya',
+                  'Welcome Baraya',
                   style: TextStyle(
                     fontSize: isMobile ? 24 : 28,
                     fontWeight: FontWeight.bold,
@@ -233,10 +233,18 @@ class HomeScreen extends ConsumerWidget {
                               _buildMenuCard(
                                 context,
                                 isMobile: isMobile,
-                                icon: Icons.assignment_outlined,
-                                title: 'Nilai',
+                                icon: Icons.class_outlined,
+                                title: 'Kelas',
                                 color: Colors.orange.shade600,
-                                onTap: () => context.push('/nilai'),
+                                onTap: () => context.push('/kelas'),
+                              ),
+                              _buildMenuCard(
+                                context,
+                                isMobile: isMobile,
+                                icon: Icons.menu_book_outlined,
+                                title: 'Mata Pelajaran',
+                                color: Colors.green.shade600,
+                                onTap: () => context.push('/mapel'),
                               ),
                               _buildMenuCard(
                                 context,
@@ -245,6 +253,15 @@ class HomeScreen extends ConsumerWidget {
                                 title: 'Jadwal',
                                 color: Colors.purple.shade600,
                                 onTap: () => _showComingSoon(context, 'Jadwal'),
+                              ),
+                              // ✅ PERBAIKAN: Menu Nilai sekarang navigasi ke /nilai
+                              _buildMenuCard(
+                                context,
+                                isMobile: isMobile,
+                                icon: Icons.assignment_outlined,
+                                title: 'Nilai',
+                                color: Colors.teal.shade600,
+                                onTap: () => context.push('/nilai'), // ✅ DIPERBAIKI
                               ),
                               _buildMenuCard(
                                 context,
@@ -294,11 +311,13 @@ class HomeScreen extends ConsumerWidget {
                   children: [
                     Icon(icon, size: 32, color: color),
                     const SizedBox(width: 16),
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],
@@ -310,6 +329,7 @@ class HomeScreen extends ConsumerWidget {
                     const SizedBox(height: 16),
                     Text(
                       title,
+                      textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,

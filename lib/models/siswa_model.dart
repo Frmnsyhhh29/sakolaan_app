@@ -1,70 +1,64 @@
 // lib/models/siswa_model.dart
 class Siswa {
-  final int? id;
+  final String? id;
   final String nis;
   final String nama;
-  final String kelas;
+  final String? kelasId;  // ✅ Untuk relasi ke tabel kelas
+  final String? kelas;    // ✅ Untuk display nama kelas (dari response API)
+  final String? jenisKelamin;
+  final String? tanggalLahir;
   final String alamat;
   final String noHp;
-  final String? createdAt;
-  final String? updatedAt;
+  final String? email;
 
   Siswa({
     this.id,
     required this.nis,
     required this.nama,
-    required this.kelas,
+    this.kelasId,
+    this.kelas,
+    this.jenisKelamin,
+    this.tanggalLahir,
     required this.alamat,
     required this.noHp,
-    this.createdAt,
-    this.updatedAt,
+    this.email,
   });
 
-  // Konversi dari JSON ke Object Siswa
   factory Siswa.fromJson(Map<String, dynamic> json) {
     return Siswa(
-      id: json['id'],
-      nis: json['nis'].toString(),
+      id: json['id']?.toString(),
+      nis: json['nis'] ?? '',
       nama: json['nama'] ?? '',
-      kelas: json['kelas'] ?? '',
+      kelasId: json['kelas_id']?.toString(),
+      kelas: json['kelas']?.toString() ?? json['kelas_nama'], // Support both formats
+      jenisKelamin: json['jenis_kelamin'],
+      tanggalLahir: json['tanggal_lahir'],
       alamat: json['alamat'] ?? '',
       noHp: json['no_hp'] ?? '',
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
+      email: json['email'],
     );
   }
 
-  // Konversi dari Object Siswa ke JSON
   Map<String, dynamic> toJson() {
     return {
+      if (id != null) 'id': id,
       'nis': nis,
       'nama': nama,
-      'kelas': kelas,
+      if (kelasId != null) 'kelas_id': kelasId,
+      if (kelas != null) 'kelas': kelas,
+      if (jenisKelamin != null) 'jenis_kelamin': jenisKelamin,
+      if (tanggalLahir != null) 'tanggal_lahir': tanggalLahir,
       'alamat': alamat,
       'no_hp': noHp,
+      if (email != null) 'email': email,
     };
   }
 
-  // Fungsi untuk membuat copy dengan perubahan tertentu
-  Siswa copyWith({
-    int? id,
-    String? nis,
-    String? nama,
-    String? kelas,
-    String? alamat,
-    String? noHp,
-    String? createdAt,
-    String? updatedAt,
-  }) {
-    return Siswa(
-      id: id ?? this.id,
-      nis: nis ?? this.nis,
-      nama: nama ?? this.nama,
-      kelas: kelas ?? this.kelas,
-      alamat: alamat ?? this.alamat,
-      noHp: noHp ?? this.noHp,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-    );
+  // Helper untuk display
+  String get displayKelas => kelas ?? 'Belum ada kelas';
+  String get displayJenisKelamin {
+    if (jenisKelamin == 'L') return 'Laki-laki';
+    if (jenisKelamin == 'P') return 'Perempuan';
+    return '-';
   }
 }
