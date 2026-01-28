@@ -60,6 +60,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const HomeScreen(),
       ),
 
+      // SISWA ROUTES
       GoRoute(
         path: '/siswa',
         name: 'siswa',
@@ -68,6 +69,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
 
       GoRoute(
         path: '/siswa/tambah',
+        name: 'siswa-tambah', // Tambahkan nama route
         builder: (context, state) => const SiswaTambahPage(),
       ),
 
@@ -80,6 +82,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         },
       ),
 
+      // GURU ROUTES
       GoRoute(
         path: '/guru', 
         name: 'guru',
@@ -88,10 +91,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
 
       GoRoute(
         path: '/guru/tambah', 
-        name: 'guru',
+        name: 'guru-tambah', // ✅ UBAH DARI 'guru' MENJADI 'guru-tambah'
         builder: (context, state) => const GuruTambahPage(),
       ),
 
+      // MAPEL ROUTES
       GoRoute(
         path: '/mapel', 
         name: 'mapel',

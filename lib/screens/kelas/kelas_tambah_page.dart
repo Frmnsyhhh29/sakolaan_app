@@ -1,71 +1,49 @@
-// lib/screens/mapel/mapel_tambah_page.dart
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-<<<<<<< Updated upstream
-import '../../models/mapel_model.dart';  // Tambahkan import model
-=======
->>>>>>> Stashed changes
-import '../../services/mapel_service.dart';
+import '/services/kelas_service.dart';
 
-class MapelTambahPage extends StatefulWidget {
-  const MapelTambahPage({super.key});
+class KelasTambahPage extends StatefulWidget {
+  const KelasTambahPage({super.key});
 
   @override
-  State<MapelTambahPage> createState() => _MapelTambahPageState();
+  State<KelasTambahPage> createState() => _KelasTambahPageState();
 }
 
-class _MapelTambahPageState extends State<MapelTambahPage> {
+class _KelasTambahPageState extends State<KelasTambahPage> {
   final _formKey = GlobalKey<FormState>();
 
-  final _kodeMapelController = TextEditingController();
-  final _namaMapelController = TextEditingController();
-  final _guruPengampuController = TextEditingController();
-  final _jamPelajaranController = TextEditingController();
-  final _deskripsiController = TextEditingController();
+  final _kelasController = TextEditingController();
+  final _tingkatController = TextEditingController(); // ✅ TAMBAH INI
+  final _jurusanController = TextEditingController(); // ✅ TAMBAH INI
+  final _waliController = TextEditingController();
+  final _kapasitasController = TextEditingController(); // ✅ TAMBAH INI (opsional)
 
   bool _isLoading = false;
 
   @override
   void dispose() {
-    _kodeMapelController.dispose();
-    _namaMapelController.dispose();
-    _guruPengampuController.dispose();
-    _jamPelajaranController.dispose();
-    _deskripsiController.dispose();
+    _kelasController.dispose();
+    _tingkatController.dispose();
+    _jurusanController.dispose();
+    _waliController.dispose();
+    _kapasitasController.dispose();
     super.dispose();
   }
 
+  // ================= SUBMIT KE API =================
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
 
       try {
-<<<<<<< Updated upstream
-        final mapelService = MapelService();
-        
-        // Buat object Mapel terlebih dahulu
-        final mapel = Mapel(
-          kodeMapel: _kodeMapelController.text,
-          namaMapel: _namaMapelController.text,
-          guruPengampu: _guruPengampuController.text,
-          jamPelajaran: _jamPelajaranController.text,
-=======
-        final success = await MapelService.tambahMapel(
-          kodeMapel: _kodeMapelController.text,
-          namaMapel: _namaMapelController.text,
-          guruPengampu: _guruPengampuController.text,
-          jamPelajaran: int.parse(_jamPelajaranController.text),
->>>>>>> Stashed changes
-          deskripsi: _deskripsiController.text.isEmpty 
-              ? null 
-              : _deskripsiController.text,
+        // ✅ PERBAIKAN: Kirim data sesuai parameter yang ada di KelasService
+        final success = await KelasService.tambahKelas(
+          namaKelas: _kelasController.text,
+          tingkat: _tingkatController.text,      // ✅ WAJIB
+          jurusan: _jurusanController.text,      // ✅ WAJIB
+          waliKelas: _waliController.text.isEmpty ? null : _waliController.text,
+          kapasitas: int.tryParse(_kapasitasController.text),
         );
-<<<<<<< Updated upstream
-        
-        // Pass object Mapel sebagai positional argument
-        final success = await mapelService.createMapel(mapel);
-=======
->>>>>>> Stashed changes
 
         setState(() => _isLoading = false);
 
@@ -74,16 +52,16 @@ class _MapelTambahPageState extends State<MapelTambahPage> {
         if (success) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Mata pelajaran berhasil ditambahkan'),
+              content: Text('Kelas berhasil ditambahkan'),
               backgroundColor: Colors.green,
               duration: Duration(seconds: 2),
             ),
           );
-          context.pop(true);
+          context.pop();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Gagal menambahkan mata pelajaran'),
+              content: Text('Gagal menambahkan kelas. Silakan coba lagi.'),
               backgroundColor: Colors.red,
               duration: Duration(seconds: 3),
             ),
@@ -110,6 +88,7 @@ class _MapelTambahPageState extends State<MapelTambahPage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
 
+      // ================= APPBAR =================
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
@@ -119,16 +98,17 @@ class _MapelTambahPageState extends State<MapelTambahPage> {
         ),
         title: Row(
           children: [
-            Icon(Icons.menu_book, color: Colors.green.shade600),
+            Icon(Icons.school, color: Colors.green.shade600),
             const SizedBox(width: 10),
             const Text(
-              'Tambah Mata Pelajaran',
+              'Tambah Kelas',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ],
         ),
       ),
 
+      // ================= BODY =================
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -138,93 +118,71 @@ class _MapelTambahPageState extends State<MapelTambahPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // ================= INFO KELAS =================
                   _card(
-                    title: 'Informasi Mata Pelajaran',
+                    title: 'Informasi Kelas',
                     child: Column(
                       children: [
-                        // KODE MAPEL
                         _buildField(
-                          controller: _kodeMapelController,
-                          label: 'Kode Mata Pelajaran',
-                          hint: 'Contoh: MAT101',
-                          icon: Icons.code,
+                          controller: _kelasController,
+                          label: 'Nama Kelas',
+                          hint: 'Contoh: X IPA 1',
+                          icon: Icons.class_,
                           enabled: !_isLoading,
                           validator: (v) =>
-                              v!.isEmpty ? 'Kode mapel wajib diisi' : null,
+                              v!.isEmpty ? 'Nama kelas wajib diisi' : null,
                         ),
                         const SizedBox(height: 16),
-
-                        // NAMA MAPEL
+                        
+                        // ✅ TAMBAH FIELD TINGKAT
                         _buildField(
-                          controller: _namaMapelController,
-                          label: 'Nama Mata Pelajaran',
-                          hint: 'Contoh: Matematika',
-                          icon: Icons.menu_book,
+                          controller: _tingkatController,
+                          label: 'Tingkat',
+                          hint: 'Contoh: X, XI, XII',
+                          icon: Icons.stairs,
                           enabled: !_isLoading,
                           validator: (v) =>
-                              v!.isEmpty ? 'Nama mapel wajib diisi' : null,
+                              v!.isEmpty ? 'Tingkat wajib diisi' : null,
                         ),
                         const SizedBox(height: 16),
-
-                        // GURU PENGAMPU
+                        
+                        // ✅ TAMBAH FIELD JURUSAN
                         _buildField(
-                          controller: _guruPengampuController,
-                          label: 'Guru Pengampu',
-                          hint: 'Contoh: Bapak Ahmad',
+                          controller: _jurusanController,
+                          label: 'Jurusan',
+                          hint: 'Contoh: IPA, IPS, TKJ',
+                          icon: Icons.school_outlined,
+                          enabled: !_isLoading,
+                          validator: (v) =>
+                              v!.isEmpty ? 'Jurusan wajib diisi' : null,
+                        ),
+                        const SizedBox(height: 16),
+                        
+                        _buildField(
+                          controller: _waliController,
+                          label: 'Wali Kelas (Opsional)',
+                          hint: 'Contoh: Bapak Andi',
                           icon: Icons.person,
                           enabled: !_isLoading,
-                          validator: (v) =>
-                              v!.isEmpty ? 'Guru pengampu wajib diisi' : null,
                         ),
                         const SizedBox(height: 16),
-
-                        // JAM PELAJARAN
+                        
+                        // ✅ TAMBAH FIELD KAPASITAS
                         _buildField(
-                          controller: _jamPelajaranController,
-                          label: 'Jam Pelajaran per Minggu',
-<<<<<<< Updated upstream
-                          hint: 'Contoh: 4 jam/minggu',
-                          icon: Icons.schedule,
-                          keyboardType: TextInputType.text,
-=======
-                          hint: 'Contoh: 4',
-                          icon: Icons.schedule,
+                          controller: _kapasitasController,
+                          label: 'Kapasitas (Opsional)',
+                          hint: 'Contoh: 32',
+                          icon: Icons.groups,
                           keyboardType: TextInputType.number,
->>>>>>> Stashed changes
                           enabled: !_isLoading,
                           validator: (v) {
-                            if (v!.isEmpty) {
-                              return 'Jam pelajaran wajib diisi';
+                            if (v != null && v.isNotEmpty) {
+                              if (int.tryParse(v) == null || int.parse(v) <= 0) {
+                                return 'Kapasitas harus lebih dari 0';
+                              }
                             }
-<<<<<<< Updated upstream
-=======
-                            if (int.tryParse(v) == null || int.parse(v) <= 0) {
-                              return 'Jam pelajaran harus lebih dari 0';
-                            }
->>>>>>> Stashed changes
                             return null;
                           },
-                        ),
-                        const SizedBox(height: 16),
-
-                        // DESKRIPSI
-                        TextFormField(
-                          controller: _deskripsiController,
-                          enabled: !_isLoading,
-                          maxLines: 4,
-                          decoration: InputDecoration(
-                            labelText: 'Deskripsi (Opsional)',
-                            hintText: 'Contoh: Mata pelajaran wajib untuk kelas X',
-                            prefixIcon: const Icon(Icons.description),
-                            filled: true,
-                            fillColor: _isLoading
-                                ? Colors.grey.shade200
-                                : Colors.grey.shade100,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(14),
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
                         ),
                       ],
                     ),
@@ -232,7 +190,7 @@ class _MapelTambahPageState extends State<MapelTambahPage> {
 
                   const SizedBox(height: 32),
 
-                  // BUTTON SIMPAN
+                  // ================= BUTTON =================
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
@@ -256,7 +214,7 @@ class _MapelTambahPageState extends State<MapelTambahPage> {
                               ),
                             )
                           : const Text(
-                              'Simpan Mata Pelajaran',
+                              'Simpan Kelas',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -269,14 +227,10 @@ class _MapelTambahPageState extends State<MapelTambahPage> {
             ),
           ),
 
-          // LOADING OVERLAY
+          // ================= LOADING OVERLAY =================
           if (_isLoading)
             Container(
-<<<<<<< Updated upstream
-              color: Colors.black.withValues(alpha: 0.3),
-=======
               color: Colors.black.withAlpha(76),
->>>>>>> Stashed changes
               child: const Center(
                 child: Card(
                   child: Padding(
@@ -298,6 +252,7 @@ class _MapelTambahPageState extends State<MapelTambahPage> {
     );
   }
 
+  // ================= CARD =================
   Widget _card({required String title, required Widget child}) {
     return Container(
       padding: const EdgeInsets.all(20),
@@ -306,11 +261,7 @@ class _MapelTambahPageState extends State<MapelTambahPage> {
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-<<<<<<< Updated upstream
-            color: Colors.black.withValues(alpha: 0.05),
-=======
             color: Colors.black.withAlpha(13),
->>>>>>> Stashed changes
             blurRadius: 12,
             offset: const Offset(0, 6),
           ),
@@ -330,6 +281,7 @@ class _MapelTambahPageState extends State<MapelTambahPage> {
     );
   }
 
+  // ================= INPUT =================
   Widget _buildField({
     required TextEditingController controller,
     required String label,
@@ -338,12 +290,14 @@ class _MapelTambahPageState extends State<MapelTambahPage> {
     TextInputType keyboardType = TextInputType.text,
     bool enabled = true,
     String? Function(String?)? validator,
+    Function(String)? onChanged,
   }) {
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
       enabled: enabled,
       validator: validator,
+      onChanged: onChanged,
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,

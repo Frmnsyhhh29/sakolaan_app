@@ -17,7 +17,11 @@ class MapelDetailPage extends StatefulWidget {
 }
 
 class _MapelDetailPageState extends State<MapelDetailPage> {
+<<<<<<< Updated upstream
+  late Future<Mapel?> _mapelFuture; // Ubah ke nullable
+=======
   late Future<Mapel> _mapelFuture;
+>>>>>>> Stashed changes
 
   @override
   void initState() {
@@ -26,7 +30,12 @@ class _MapelDetailPageState extends State<MapelDetailPage> {
   }
 
   void _loadData() {
+<<<<<<< Updated upstream
+    final mapelService = MapelService(); // Buat instance
+    _mapelFuture = mapelService.getMapelById(int.parse(widget.mapelId)); // Assign ke variable
+=======
     _mapelFuture = MapelService.getMapelById(widget.mapelId);
+>>>>>>> Stashed changes
   }
 
   Future<void> _deleteMapel() async {
@@ -65,7 +74,12 @@ class _MapelDetailPageState extends State<MapelDetailPage> {
         ),
       );
 
+<<<<<<< Updated upstream
+      final mapelService = MapelService(); // Buat instance
+      final success = await mapelService.deleteMapel(int.parse(widget.mapelId)); // Gunakan instance
+=======
       final success = await MapelService.deleteMapel(widget.mapelId);
+>>>>>>> Stashed changes
 
       if (mounted) {
         Navigator.pop(context); // Close loading
@@ -134,7 +148,11 @@ class _MapelDetailPageState extends State<MapelDetailPage> {
         ],
       ),
 
+<<<<<<< Updated upstream
+      body: FutureBuilder<Mapel?>(
+=======
       body: FutureBuilder<Mapel>(
+>>>>>>> Stashed changes
         future: _mapelFuture,
         builder: (context, snapshot) {
           // LOADING
@@ -143,7 +161,11 @@ class _MapelDetailPageState extends State<MapelDetailPage> {
           }
 
           // ERROR
+<<<<<<< Updated upstream
+          if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
+=======
           if (snapshot.hasError) {
+>>>>>>> Stashed changes
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(32),
@@ -166,7 +188,11 @@ class _MapelDetailPageState extends State<MapelDetailPage> {
                     ),
                     const SizedBox(height: 8),
                     Text(
+<<<<<<< Updated upstream
+                      snapshot.hasError ? '${snapshot.error}' : 'Data tidak ditemukan',
+=======
                       '${snapshot.error}',
+>>>>>>> Stashed changes
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.grey.shade600),
                     ),
@@ -205,7 +231,11 @@ class _MapelDetailPageState extends State<MapelDetailPage> {
                         border: Border.all(color: Colors.grey.shade200),
                         boxShadow: [
                           BoxShadow(
+<<<<<<< Updated upstream
+                            color: Colors.black.withValues(alpha: 0.05),
+=======
                             color: Colors.black.withAlpha(13),
+>>>>>>> Stashed changes
                             blurRadius: 8,
                             offset: const Offset(0, 2),
                           ),
@@ -261,13 +291,21 @@ class _MapelDetailPageState extends State<MapelDetailPage> {
                           _detailRow(
                             Icons.person_outline,
                             'Guru Pengampu',
+<<<<<<< Updated upstream
+                            mapel.guruPengampu ?? '-',
+=======
                             mapel.guruPengampu,
+>>>>>>> Stashed changes
                           ),
                           const SizedBox(height: 16),
                           _detailRow(
                             Icons.schedule_outlined,
                             'Jam Pelajaran',
+<<<<<<< Updated upstream
+                            mapel.jamPelajaran ?? '-',
+=======
                             '${mapel.jamPelajaran} jam/minggu',
+>>>>>>> Stashed changes
                           ),
 
                           if (mapel.deskripsi != null &&

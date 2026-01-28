@@ -1,0 +1,396 @@
+[1mdiff --git a/assets/images/anakanak.png b/assets/images/anakanak.png[m
+[1mnew file mode 100644[m
+[1mindex 0000000..cc01961[m
+Binary files /dev/null and b/assets/images/anakanak.png differ
+[1mdiff --git a/assets/images/anakanakpolos.png b/assets/images/anakanakpolos.png[m
+[1mnew file mode 100644[m
+[1mindex 0000000..fc22de7[m
+Binary files /dev/null and b/assets/images/anakanakpolos.png differ
+[1mdiff --git a/lib/models/mapel_model.dart b/lib/models/mapel_model.dart[m
+[1mnew file mode 100644[m
+[1mindex 0000000..7c81d8a[m
+[1m--- /dev/null[m
+[1m+++ b/lib/models/mapel_model.dart[m
+[36m@@ -0,0 +1,45 @@[m
+[32m+[m[32m// lib/models/mapel_model.dart[m
+[32m+[m[32mclass Mapel {[m
+[32m+[m[32m  final int id;[m
+[32m+[m[32m  final String kodeMapel;[m
+[32m+[m[32m  final String namaMapel;[m
+[32m+[m[32m  final String guruPengampu;[m
+[32m+[m[32m  final int jamPelajaran;[m
+[32m+[m[32m  final String? deskripsi;[m
+[32m+[m[32m  final String? createdAt;[m
+[32m+[m[32m  final String? updatedAt;[m
+[32m+[m
+[32m+[m[32m  Mapel({[m
+[32m+[m[32m    required this.id,[m
+[32m+[m[32m    required this.kodeMapel,[m
+[32m+[m[32m    required this.namaMapel,[m
+[32m+[m[32m    required this.guruPengampu,[m
+[32m+[m[32m    required this.jamPelajaran,[m
+[32m+[m[32m    this.deskripsi,[m
+[32m+[m[32m    this.createdAt,[m
+[32m+[m[32m    this.updatedAt,[m
+[32m+[m[32m  });[m
+[32m+[m
+[32m+[m[32m  factory Mapel.fromJson(Map<String, dynamic> json) {[m
+[32m+[m[32m    return Mapel([m
+[32m+[m[32m      id: json['id'],[m
+[32m+[m[32m      kodeMapel: json['kode_mapel'],[m
+[32m+[m[32m      namaMapel: json['nama_mapel'],[m
+[32m+[m[32m      guruPengampu: json['guru_pengampu'],[m
+[32m+[m[32m      jamPelajaran: json['jam_pelajaran'],[m
+[32m+[m[32m      deskripsi: json['deskripsi'],[m
+[32m+[m[32m      createdAt: json['created_at'],[m
+[32m+[m[32m      updatedAt: json['updated_at'],[m
+[32m+[m[32m    );[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  Map<String, dynamic> toJson() {[m
+[32m+[m[32m    return {[m
+[32m+[m[32m      'kode_mapel': kodeMapel,[m
+[32m+[m[32m      'nama_mapel': namaMapel,[m
+[32m+[m[32m      'guru_pengampu': guruPengampu,[m
+[32m+[m[32m      'jam_pelajaran': jamPelajaran,[m
+[32m+[m[32m      'deskripsi': deskripsi,[m
+[32m+[m[32m    };[m
+[32m+[m[32m  }[m
+[32m+[m[32m}[m
+\ No newline at end of file[m
+[1mdiff --git a/lib/models/nilai.dart b/lib/models/nilai.dart[m
+[1mnew file mode 100644[m
+[1mindex 0000000..561294d[m
+[1m--- /dev/null[m
+[1m+++ b/lib/models/nilai.dart[m
+[36m@@ -0,0 +1,103 @@[m
+[32m+[m[32mclass Nilai {[m
+[32m+[m[32m  final int id;[m
+[32m+[m[32m  final int siswaId;[m
+[32m+[m[32m  final int mapelId;[m
+[32m+[m[32m  final String semester;[m
+[32m+[m[32m  final int tahunAjaran;[m
+[32m+[m[32m  final double nilaiTugas;[m
+[32m+[m[32m  final double nilaiUts;[m
+[32m+[m[32m  final double nilaiUas;[m
+[32m+[m[32m  final double nilaiAkhir;[m
+[32m+[m[32m  final String grade;[m
+[32m+[m[32m  final String? catatan;[m
+[32m+[m[32m  final DateTime createdAt;[m
+[32m+[m[32m  final DateTime updatedAt;[m
+[32m+[m[41m  [m
+[32m+[m[32m  // Relasi[m
+[32m+[m[32m  final Siswa? siswa;[m
+[32m+[m[32m  final Mapel? mapel;[m
+[32m+[m
+[32m+[m[32m  Nilai({[m
+[32m+[m[32m    required this.id,[m
+[32m+[m[32m    required this.siswaId,[m
+[32m+[m[32m    required this.mapelId,[m
+[32m+[m[32m    required this.semester,[m
+[32m+[m[32m    required this.tahunAjaran,[m
+[32m+[m[32m    required this.nilaiTugas,[m
+[32m+[m[32m    required this.nilaiUts,[m
+[32m+[m[32m    required this.nilaiUas,[m
+[32m+[m[32m    required this.nilaiAkhir,[m
+[32m+[m[32m    required this.grade,[m
+[32m+[m[32m    this.catatan,[m
+[32m+[m[32m    required this.createdAt,[m
+[32m+[m[32m    required this.updatedAt,[m
+[32m+[m[32m    this.siswa,[m
+[32m+[m[32m    this.mapel,[m
+[32m+[m[32m  });[m
+[32m+[m
+[32m+[m[32m  factory Nilai.fromJson(Map<String, dynamic> json) {[m
+[32m+[m[32m    return Nilai([m
+[32m+[m[32m      id: json['id'],[m
+[32m+[m[32m      siswaId: json['siswa_id'],[m
+[32m+[m[32m      mapelId: json['mapel_id'],[m
+[32m+[m[32m      semester: json['semester'],[m
+[32m+[m[32m      tahunAjaran: json['tahun_ajaran'],[m
+[32m+[m[32m      nilaiTugas: double.parse(json['nilai_tugas'].toString()),[m
+[32m+[m[32m      nilaiUts: double.parse(json['nilai_uts'].toString()),[m
+[32m+[m[32m      nilaiUas: double.parse(json['nilai_uas'].toString()),[m
+[32m+[m[32m      nilaiAkhir: double.parse(json['nilai_akhir'].toString()),[m
+[32m+[m[32m      grade: json['grade'],[m
+[32m+[m[32m      catatan: json['catatan'],[m
+[32m+[m[32m      createdAt: DateTime.parse(json['created_at']),[m
+[32m+[m[32m      updatedAt: DateTime.parse(json['updated_at']),[m
+[32m+[m[32m      siswa: json['siswa'] != null ? Siswa.fromJson(json['siswa']) : null,[m
+[32m+[m[32m      mapel: json['mapel'] != null ? Mapel.fromJson(json['mapel']) : null,[m
+[32m+[m[32m    );[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  Map<String, dynamic> toJson() {[m
+[32m+[m[32m    return {[m
+[32m+[m[32m      'siswa_id': siswaId,[m
+[32m+[m[32m      'mapel_id': mapelId,[m
+[32m+[m[32m      'semester': semester,[m
+[32m+[m[32m      'tahun_ajaran': tahunAjaran,[m
+[32m+[m[32m      'nilai_tugas': nilaiTugas,[m
+[32m+[m[32m      'nilai_uts': nilaiUts,[m
+[32m+[m[32m      'nilai_uas': nilaiUas,[m
+[32m+[m[32m      'catatan': catatan,[m
+[32m+[m[32m    };[m
+[32m+[m[32m  }[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m// Import models yang dibutuhkan[m
+[32m+[m[32mclass Siswa {[m
+[32m+[m[32m  final int id;[m
+[32m+[m[32m  final String nama;[m
+[32m+[m[32m  final String nis;[m
+[32m+[m[41m  [m
+[32m+[m[32m  Siswa({required this.id, required this.nama, required this.nis});[m
+[32m+[m[41m  [m
+[32m+[m[32m  factory Siswa.fromJson(Map<String, dynamic> json) {[m
+[32m+[m[32m    return Siswa([m
+[32m+[m[32m      id: json['id'],[m
+[32m+[m[32m      nama: json['nama'],[m
+[32m+[m[32m      nis: json['nis'],[m
+[32m+[m[32m    );[m
+[32m+[m[32m  }[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mclass Mapel {[m
+[32m+[m[32m  final int id;[m
+[32m+[m[32m  final String namaMapel;[m
+[32m+[m[32m  final String kodeMapel;[m
+[32m+[m[41m  [m
+[32m+[m[32m  Mapel({required this.id, required this.namaMapel, required this.kodeMapel});[m
+[32m+[m[41m  [m
+[32m+[m[32m  factory Mapel.fromJson(Map<String, dynamic> json) {[m
+[32m+[m[32m    return Mapel([m
+[32m+[m[32m      id: json['id'],[m
+[32m+[m[32m      namaMapel: json['nama_mapel'],[m
+[32m+[m[32m      kodeMapel: json['kode_mapel'],[m
+[32m+[m[32m    );[m
+[32m+[m[32m  }[m
+[32m+[m[32m}[m
+\ No newline at end of file[m
+[1mdiff --git a/lib/providers/nilai_provider.dart b/lib/providers/nilai_provider.dart[m
+[1mnew file mode 100644[m
+[1mindex 0000000..0528d53[m
+[1m--- /dev/null[m
+[1m+++ b/lib/providers/nilai_provider.dart[m
+[36m@@ -0,0 +1,105 @@[m
+[32m+[m[32mimport 'package:flutter_riverpod/flutter_riverpod.dart';[m
+[32m+[m[32mimport '../models/nilai.dart';[m
+[32m+[m[32mimport '../services/nilai_service.dart';[m
+[32m+[m
+[32m+[m[32m// Provider untuk NilaiService[m
+[32m+[m[32mfinal nilaiServiceProvider = Provider((ref) => NilaiService());[m
+[32m+[m
+[32m+[m[32m// State untuk list nilai[m
+[32m+[m[32mclass NilaiState {[m
+[32m+[m[32m  final List<Nilai> nilaiList;[m
+[32m+[m[32m  final bool isLoading;[m
+[32m+[m[32m  final String? error;[m
+[32m+[m
+[32m+[m[32m  NilaiState({[m
+[32m+[m[32m    this.nilaiList = const [],[m
+[32m+[m[32m    this.isLoading = false,[m
+[32m+[m[32m    this.error,[m
+[32m+[m[32m  });[m
+[32m+[m
+[32m+[m[32m  NilaiState copyWith({[m
+[32m+[m[32m    List<Nilai>? nilaiList,[m
+[32m+[m[32m    bool? isLoading,[m
+[32m+[m[32m    String? error,[m
+[32m+[m[32m  }) {[m
+[32m+[m[32m    return NilaiState([m
+[32m+[m[32m      nilaiList: nilaiList ?? this.nilaiList,[m
+[32m+[m[32m      isLoading: isLoading ?? this.isLoading,[m
+[32m+[m[32m      error: error,[m
+[32m+[m[32m    );[m
+[32m+[m[32m  }[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m// Notifier untuk manage state nilai[m
+[32m+[m[32mclass NilaiNotifier extends StateNotifier<NilaiState> {[m
+[32m+[m[32m  final NilaiService _nilaiService;[m
+[32m+[m
+[32m+[m[32m  NilaiNotifier(this._nilaiService) : super(NilaiState());[m
+[32m+[m
+[32m+[m[32m  // Load semua nilai[m
+[32m+[m[32m  Future<void> loadNilai({[m
+[32m+[m[32m    int? siswaId,[m
+[32m+[m[32m    int? mapelId,[m
+[32m+[m[32m    String? semester,[m
+[32m+[m[32m    int? tahunAjaran,[m
+[32m+[m[32m  }) async {[m
+[32m+[m[32m    state = state.copyWith(isLoading: true, error: null);[m
+[32m+[m[41m    [m
+[32m+[m[32m    try {[m
+[32m+[m[32m      final nilai = await _nilaiService.getAllNilai([m
+[32m+[m[32m        siswaId: siswaId,[m
+[32m+[m[32m        mapelId: mapelId,[m
+[32m+[m[32m        semester: semester,[m
+[32m+[m[32m        tahunAjaran: tahunAjaran,[m
+[32m+[m[32m      );[m
+[32m+[m[32m      state = state.copyWith(nilaiList: nilai, isLoading: false);[m
+[32m+[m[32m    } catch (e) {[m
+[32m+[m[32m      state = state.copyWith([m
+[32m+[m[32m        error: e.toString(),[m
+[32m+[m[32m        isLoading: false,[m
+[32m+[m[32m      );[m
+[32m+[m[32m    }[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  // Tambah nilai baru[m
+[32m+[m[32m  Future<bool> addNilai(Nilai nilai) async {[m
+[32m+[m[32m    try {[m
+[32m+[m[32m      await _nilaiService.createNilai(nilai);[m
+[32m+[m[32m      await loadNilai(); // Refresh list[m
+[32m+[m[32m      return true;[m
+[32m+[m[32m    } catch (e) {[m
+[32m+[m[32m      state = state.copyWith(error: e.toString());[m
+[32m+[m[32m      return false;[m
+[32m+[m[32m    }[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  // Update nilai[m
+[32m+[m[32m  Future<bool> updateNilai(int id, Nilai nilai) async {[m
+[32m+[m[32m    try {[m
+[32m+[m[32m      await _nilaiService.updateNilai(id, nilai);[m
+[32m+[m[32m      await loadNilai(); // Refresh list[m
+[32m+[m[32m      return true;[m
+[32m+[m[32m    } catch (e) {[m
+[32m+[m[32m      state = state.copyWith(error: e.toString());[m
+[32m+[m[32m      return false;[m
+[32m+[m[32m    }[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  // Hapus nilai[m
+[32m+[m[32m  Future<bool> deleteNilai(int id) async {[m
+[32m+[m[32m    try {[m
+[32m+[m[32m      await _nilaiService.deleteNilai(id);[m
+[32m+[m[32m      await loadNilai(); // Refresh list[m
+[32m+[m[32m      return true;[m
+[32m+[m[32m    } catch (e) {[m
+[32m+[m[32m      state = state.copyWith(error: e.toString());[m
+[32m+[m[32m      return false;[m
+[32m+[m[32m    }[m
+[32m+[m[32m  }[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m// Provider untuk NilaiNotifier[m
+[32m+[m[32mfinal nilaiProvider = StateNotifierProvider<NilaiNotifier, NilaiState>((ref) {[m
+[32m+[m[32m  final service = ref.watch(nilaiServiceProvider);[m
+[32m+[m[32m  return NilaiNotifier(service);[m
+[32m+[m[32m});[m
+\ No newline at end of file[m
+[1mdiff --git a/lib/screens/mapel/mapel_detail_page.dart b/lib/screens/mapel/mapel_detail_page.dart[m
+[1mnew file mode 100644[m
+[1mindex 0000000..48f8bb3[m
+[1m--- /dev/null[m
+[1m+++ b/lib/screens/mapel/mapel_detail_page.dart[m
+[36m@@ -0,0 +1,334 @@[m
+[32m+[m[32m// lib/screens/mapel/mapel_detail_page.dart[m
+[32m+[m[32mimport 'package:flutter/material.dart';[m
+[32m+[m[32mimport 'package:go_router/go_router.dart';[m
+[32m+[m[32mimport '../../models/mapel_model.dart';[m
+[32m+[m[32mimport '../../services/mapel_service.dart';[m
+[32m+[m
+[32m+[m[32mclass MapelDetailPage extends StatefulWidget {[m
+[32m+[m[32m  final String mapelId;[m
+[32m+[m
+[32m+[m[32m  const MapelDetailPage({[m
+[32m+[m[32m    super.key,[m
+[32m+[m[32m    required this.mapelId,[m
+[32m+[m[32m  });[m
+[32m+[m
+[32m+[m[32m  @override[m
+[32m+[m[32m  State<MapelDetailPage> createState() => _MapelDetailPageState();[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mclass _MapelDetailPageState extends State<MapelDetailPage> {[m
+[32m+[m[32m  late Future<Mapel> _mapelFuture;[m
+[32m+[m
+[32m+[m[32m  @override[m
+[32m+[m[32m  void initState() {[m
+[32m+[m[32m    super.initState();[m
+[32m+[m[32m    _loadData();[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  void _loadData() {[m
+[32m+[m[32m    _mapelFuture = MapelService.getMapelById(widget.mapelId);[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  Future<void> _deleteMapel() async {[m
+[32m+[m[32m    final confirm = await showDialog<bool>([m
+[32m+[m[32m      context: context,[m
+[32m+[m[32m      builder: (context) => AlertDialog([m
+[32m+[m[32m        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),[m
+[32m+[m[32m        title: const Text('Hapus Mata Pelajaran'),[m
+[32m+[m[32m        content: const Text([m
+[32m+[m[32m          'Apakah Anda yakin ingin menghapus mata pelajaran ini?',[m
+[32m+[m[32m        ),[m
+[32m+[m[32m        actions: [[m
+[32m+[m[32m          TextButton([m
+[32m+[m[32m            onPressed: () => Navigator.pop(context, false),[m
+[32m+[m[32m            child: const Text('Batal'),[m
+[32m+[m[32m          ),[m
+[32m+[m[32m          ElevatedButton([m
+[32m+[m[32m            onPressed: () => Navigator.pop(context, true),[m
+[32m+[m[32m            style: ElevatedButton.styleFrom([m
+[32m+[m[32m              backgroundColor: Colors.red.shade600,[m
+[32m+[m[32m              foregroundColor: Colors.white,[m
+[32m+[m[32m            ),[m
+[32m+[m[32m            child: const Text('Hapus'),[m
+[32m+[m[32m          ),[m
+[32m+[m[32m        ],[m
+[32m+[m[32m      ),[m
+[32m+[m[32m    );[m
+[32m+[m
+[32m+[m[32m    if (confirm == true && mounted) {[m
+[32m+[m[32m      // Show loading[m
+[32m+[m[32m      showDialog([m
+[32m+[m[32m        context: context,[m
+[32m+[m[32m        barrierDismissible: false,[m
+[32m+[m[32m        builder: (context) => const Center([m
+[32m+[m[32m          child: CircularProgressIndicator(),[m
+[32m+[m[32m        ),[m
+[32m+[m[32m      );[m
+[32m+[m
+[32m+[m[32m      final success = await MapelService.deleteMapel(widget.mapelId);[m
+[32m+[m
+[32m+[m[32m      if (mounted) {[m
+[32m+[m[32m        Navigator.pop(context); // Close loading[m
+[32m+[m
+[32m+[m[32m        ScaffoldMessenger.of(context).showSnackBar([m
+[32m+[m[32m          SnackBar([m
+[32m+[m[32m            content: Text([m
+[32m+[m[32m              success[m
+[32m+[m[32m                  ? 'Mata pelajaran berhasil dihapus'[m
+[32m+[m[32m                  : 'Gagal menghapus mata pelajaran',[m
+[32m+[m[32m            ),[m
+[32m+[m[32m            backgroundColor: success ? Colors.green : Colors.red,[m
+[32m+[m[32m          ),[m
+[32m+[m[32m        );[m
+[32m+[m
+[32m+[m[32m        if (success) {[m
+[32m+[m[32m          context.pop(true); // Kembali ke list[m
+[32m+[m[32m        }[m
+[32m+[m[32m      }[m
+[32m+[m[32m    }[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  @override[m
+[32m+[m[32m  Widget build(BuildContext context) {[m
+[32m+[m[32m    final width = MediaQuery.of(context).size.width;[m
+[32m+[m[32m    final isMobile = width < 600;[m
+[32m+[m
+[32m+[m[32m    return Scaffold([m
+[32m+[m[32m      backgroundColor: Colors.grey.shade50,[m
+[32m+[m
+[32m+[m[32m      appBar: AppBar([m
+[32m+[m[32m        backgroundColor: Colors.grey.shade100,[m
+[32m+[m[32m        elevation: 0,[m
+[32m+[m[32m        leading: IconButton([m
+[32m+[m[32m          icon: const Icon(Icons.arrow_back),[m
+[32m+[m[32m          onPressed: () => context.pop(),[m
+[32m+[m[32m        ),[m
+[32m+[m[32m        title: Row([m
+[32m+[m[32m          children: [[m
+[32m+[m[32m            Icon(Icons.menu_book, color: Colors.green.sha

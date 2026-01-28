@@ -49,10 +49,17 @@ class _NilaiTambahPageState extends ConsumerState<NilaiTambahPage> {
   Future<void> _loadDropdownData() async {
     try {
       final siswaService = SiswaService();
+<<<<<<< Updated upstream
+      final mapelService = MapelService(); // Buat instance
+
+      final siswa = await siswaService.getAllSiswa();
+      final mapels = await mapelService.getAllMapel(); // Gunakan instance, bukan static
+=======
       final mapelService = MapelService();
 
       final siswa = await siswaService.getAllSiswa();
       final mapels = await MapelService.getAllMapel();
+>>>>>>> Stashed changes
 
       setState(() {
         _siswaList = siswa.map((s) => {'id': s.id, 'nama': s.nama}).toList();
@@ -91,7 +98,14 @@ class _NilaiTambahPageState extends ConsumerState<NilaiTambahPage> {
   }
 
   Future<void> _submitForm() async {
+<<<<<<< Updated upstream
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    
+=======
     if (!_formKey.currentState!.validate()) return;
+>>>>>>> Stashed changes
     if (_selectedSiswaId == null || _selectedMapelId == null) {
       _showError('Pilih siswa dan mata pelajaran');
       return;
@@ -317,7 +331,13 @@ class _NilaiTambahPageState extends ConsumerState<NilaiTambahPage> {
                                   ),
                                   keyboardType: TextInputType.number,
                                   validator: (val) {
+<<<<<<< Updated upstream
+                                    if (val == null || val.isEmpty) {
+                                      return 'Wajib diisi';
+                                    }
+=======
                                     if (val == null || val.isEmpty) return 'Wajib diisi';
+>>>>>>> Stashed changes
                                     final nilai = double.tryParse(val);
                                     if (nilai == null || nilai < 0 || nilai > 100) {
                                       return 'Nilai harus 0-100';
@@ -339,7 +359,13 @@ class _NilaiTambahPageState extends ConsumerState<NilaiTambahPage> {
                                   ),
                                   keyboardType: TextInputType.number,
                                   validator: (val) {
+<<<<<<< Updated upstream
+                                    if (val == null || val.isEmpty) {
+                                      return 'Wajib diisi';
+                                    }
+=======
                                     if (val == null || val.isEmpty) return 'Wajib diisi';
+>>>>>>> Stashed changes
                                     final nilai = double.tryParse(val);
                                     if (nilai == null || nilai < 0 || nilai > 100) {
                                       return 'Nilai harus 0-100';
@@ -361,7 +387,13 @@ class _NilaiTambahPageState extends ConsumerState<NilaiTambahPage> {
                                   ),
                                   keyboardType: TextInputType.number,
                                   validator: (val) {
+<<<<<<< Updated upstream
+                                    if (val == null || val.isEmpty) {
+                                      return 'Wajib diisi';
+                                    }
+=======
                                     if (val == null || val.isEmpty) return 'Wajib diisi';
+>>>>>>> Stashed changes
                                     final nilai = double.tryParse(val);
                                     if (nilai == null || nilai < 0 || nilai > 100) {
                                       return 'Nilai harus 0-100';

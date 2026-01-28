@@ -51,10 +51,17 @@ class _NilaiEditPageState extends ConsumerState<NilaiEditPage> {
   Future<void> _loadDropdownData() async {
     try {
       final siswaService = SiswaService();
+<<<<<<< Updated upstream
+      final mapelService = MapelService(); // Buat instance
+
+      final siswa = await siswaService.getAllSiswa();
+      final mapels = await mapelService.getAllMapel(); // Gunakan instance, bukan static
+=======
       final mapelService = MapelService();
 
       final siswa = await siswaService.getAllSiswa();
       final mapels = await MapelService.getAllMapel();
+>>>>>>> Stashed changes
 
       setState(() {
         _siswaList = siswa.map((s) => {'id': s.id, 'nama': s.nama}).toList();
@@ -98,11 +105,25 @@ class _NilaiEditPageState extends ConsumerState<NilaiEditPage> {
     final akhir = (tugas * 0.3) + (uts * 0.3) + (uas * 0.4);
 
     String grade;
+<<<<<<< Updated upstream
+    if (akhir >= 90) {
+      grade = 'A';
+    } else if (akhir >= 80) {
+      grade = 'B';
+    } else if (akhir >= 70) {
+      grade = 'C';
+    } else if (akhir >= 60) {
+      grade = 'D';
+    } else {
+      grade = 'E';
+    }
+=======
     if (akhir >= 90) grade = 'A';
     else if (akhir >= 80) grade = 'B';
     else if (akhir >= 70) grade = 'C';
     else if (akhir >= 60) grade = 'D';
     else grade = 'E';
+>>>>>>> Stashed changes
 
     setState(() {
       _nilaiAkhir = akhir;
@@ -111,7 +132,14 @@ class _NilaiEditPageState extends ConsumerState<NilaiEditPage> {
   }
 
   Future<void> _submitForm() async {
+<<<<<<< Updated upstream
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    
+=======
     if (!_formKey.currentState!.validate()) return;
+>>>>>>> Stashed changes
     if (_selectedSiswaId == null || _selectedMapelId == null) {
       _showError('Pilih siswa dan mata pelajaran');
       return;
@@ -276,9 +304,19 @@ class _NilaiEditPageState extends ConsumerState<NilaiEditPage> {
                                   ),
                                   keyboardType: TextInputType.number,
                                   validator: (val) {
+<<<<<<< Updated upstream
+                                    if (val == null || val.isEmpty) {
+                                      return 'Wajib diisi';
+                                    }
+                                    final nilai = double.tryParse(val);
+                                    if (nilai == null || nilai < 0 || nilai > 100) {
+                                      return 'Nilai harus 0-100';
+                                    }
+=======
                                     if (val == null || val.isEmpty) return 'Wajib diisi';
                                     final nilai = double.tryParse(val);
                                     if (nilai == null || nilai < 0 || nilai > 100) return 'Nilai harus 0-100';
+>>>>>>> Stashed changes
                                     return null;
                                   },
                                 ),
@@ -293,9 +331,19 @@ class _NilaiEditPageState extends ConsumerState<NilaiEditPage> {
                                   ),
                                   keyboardType: TextInputType.number,
                                   validator: (val) {
+<<<<<<< Updated upstream
+                                    if (val == null || val.isEmpty) {
+                                      return 'Wajib diisi';
+                                    }
+                                    final nilai = double.tryParse(val);
+                                    if (nilai == null || nilai < 0 || nilai > 100) {
+                                      return 'Nilai harus 0-100';
+                                    }
+=======
                                     if (val == null || val.isEmpty) return 'Wajib diisi';
                                     final nilai = double.tryParse(val);
                                     if (nilai == null || nilai < 0 || nilai > 100) return 'Nilai harus 0-100';
+>>>>>>> Stashed changes
                                     return null;
                                   },
                                 ),
@@ -310,9 +358,19 @@ class _NilaiEditPageState extends ConsumerState<NilaiEditPage> {
                                   ),
                                   keyboardType: TextInputType.number,
                                   validator: (val) {
+<<<<<<< Updated upstream
+                                    if (val == null || val.isEmpty) {
+                                      return 'Wajib diisi';
+                                    }
+                                    final nilai = double.tryParse(val);
+                                    if (nilai == null || nilai < 0 || nilai > 100) {
+                                      return 'Nilai harus 0-100';
+                                    }
+=======
                                     if (val == null || val.isEmpty) return 'Wajib diisi';
                                     final nilai = double.tryParse(val);
                                     if (nilai == null || nilai < 0 || nilai > 100) return 'Nilai harus 0-100';
+>>>>>>> Stashed changes
                                     return null;
                                   },
                                 ),
