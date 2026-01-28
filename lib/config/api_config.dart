@@ -8,4 +8,6 @@ class ApiConfig {
   
   // Siswa endpoints
   static const String siswaEndpoint = '$baseUrl/siswa';
+  static const String guruEndpoint = '$baseUrl/guru';
+  static const String mapelEndpoint = '$baseUrl/mapel';
 }
