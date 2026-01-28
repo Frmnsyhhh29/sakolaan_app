@@ -22,14 +22,16 @@ class Mapel {
 
   factory Mapel.fromJson(Map<String, dynamic> json) {
     return Mapel(
-      id: json['id'],
-      kodeMapel: json['kode_mapel'],
-      namaMapel: json['nama_mapel'],
-      guruPengampu: json['guru_pengampu'],
-      jamPelajaran: json['jam_pelajaran'],
-      deskripsi: json['deskripsi'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
+      id: json['id'] is String ? int.parse(json['id']) : json['id'],
+      kodeMapel: json['kode_mapel']?.toString() ?? '',
+      namaMapel: json['nama_mapel']?.toString() ?? '',
+      guruPengampu: json['guru_pengampu']?.toString() ?? '',
+      jamPelajaran: json['jam_pelajaran'] is String 
+          ? int.parse(json['jam_pelajaran']) 
+          : json['jam_pelajaran'],
+      deskripsi: json['deskripsi']?.toString(),
+      createdAt: json['created_at']?.toString(),
+      updatedAt: json['updated_at']?.toString(),
     );
   }
 

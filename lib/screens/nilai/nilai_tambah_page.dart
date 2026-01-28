@@ -55,8 +55,17 @@ class _NilaiTambahPageState extends ConsumerState<NilaiTambahPage> {
       final mapels = await MapelService.getAllMapel();
 
       setState(() {
-        _siswaList = siswa.map((s) => {'id': s.id, 'nama': s.nama}).toList();
-        _mapelList = mapels.map((m) => {'id': m.id, 'nama': m.namaMapel}).toList();
+        _siswaList = siswa.map((s) {
+          // Parse id ke int jika masih String
+          final id = s.id is String ? int.parse(s.id!) : s.id;
+          return {'id': id, 'nama': s.nama};
+        }).toList();
+        
+        _mapelList = mapels.map((m) {
+          // Parse id ke int jika masih String
+          final id = m.id is String ? int.parse(m.id.toString()) : m.id;
+          return {'id': id, 'nama': m.namaMapel};
+        }).toList();
       });
     } catch (e) {
       _showError('Gagal memuat data: $e');

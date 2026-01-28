@@ -1,32 +1,31 @@
-// lib/models/kelas_model.dart
 class Kelas {
-  final String id;
+  final int id;
   final String namaKelas;
   final String tingkat;
   final String jurusan;
-  final String? waliKelas;
+  final String waliKelas;
   final int? kapasitas;
-  final int? jumlahSiswa;
+  final int jumlahSiswa;
 
   Kelas({
     required this.id,
     required this.namaKelas,
     required this.tingkat,
     required this.jurusan,
-    this.waliKelas,
+    required this.waliKelas,
     this.kapasitas,
-    this.jumlahSiswa,
+    required this.jumlahSiswa,
   });
 
   factory Kelas.fromJson(Map<String, dynamic> json) {
     return Kelas(
-      id: json['id']?.toString() ?? '',
+      id: json['id'] ?? 0,
       namaKelas: json['nama_kelas'] ?? '',
       tingkat: json['tingkat'] ?? '',
       jurusan: json['jurusan'] ?? '',
-      waliKelas: json['wali_kelas'],
+      waliKelas: json['wali_kelas'] ?? '-',
       kapasitas: json['kapasitas'],
-      jumlahSiswa: json['jumlah_siswa'],
+      jumlahSiswa: json['siswa_count'] ?? 0,
     );
   }
 
@@ -38,10 +37,7 @@ class Kelas {
       'jurusan': jurusan,
       'wali_kelas': waliKelas,
       'kapasitas': kapasitas,
-      'jumlah_siswa': jumlahSiswa,
+      'siswa_count': jumlahSiswa,
     };
   }
-
-  // Helper getter untuk display
-  String get displayName => '$namaKelas - $jurusan';
 }

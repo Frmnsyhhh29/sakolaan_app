@@ -1,13 +1,12 @@
-// lib/services/kelas_service.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/kelas_model.dart';
-import '../models/siswa_model.dart'; // ✅ TAMBAH IMPORT INI
+import '../models/siswa_model.dart';
 
 class KelasService {
   static const String baseUrl = 'http://127.0.0.1:8000/api';
 
-  // GET - Semua kelas
+  // ===== GET - Semua kelas =====
   static Future<List<Kelas>> getKelas() async {
     try {
       print('🔄 Fetching kelas from: $baseUrl/kelas');
@@ -21,6 +20,7 @@ class KelasService {
       ).timeout(const Duration(seconds: 10));
 
       print('📥 Response status: ${res.statusCode}');
+      print('📥 Response body: ${res.body}');
 
       if (res.statusCode == 200) {
         final List data = jsonDecode(res.body);
@@ -34,9 +34,11 @@ class KelasService {
     }
   }
 
-  // GET - Detail kelas by ID
+  // ===== GET - Detail kelas by ID =====
   static Future<Kelas> getKelasById(String kelasId) async {
     try {
+      print('🔄 Fetching kelas detail from: $baseUrl/kelas/$kelasId');
+
       final res = await http.get(
         Uri.parse('$baseUrl/kelas/$kelasId'),
         headers: {
@@ -44,6 +46,8 @@ class KelasService {
           'Content-Type': 'application/json',
         },
       ).timeout(const Duration(seconds: 10));
+
+      print('📥 Response status: ${res.statusCode}');
 
       if (res.statusCode == 200) {
         final data = jsonDecode(res.body);
@@ -57,13 +61,13 @@ class KelasService {
     }
   }
 
-  // ✅ TAMBAH METHOD INI - GET Detail kelas dengan daftar siswa
+  // ===== GET - Detail kelas dengan daftar siswa =====
   static Future<Map<String, dynamic>> getKelasDetail(String kelasId) async {
     try {
-      print('🔄 Fetching kelas detail from: $baseUrl/kelas/$kelasId/detail');
+      print('🔄 Fetching kelas detail from: $baseUrl/kelas/$kelasId');
 
       final res = await http.get(
-        Uri.parse('$baseUrl/kelas/$kelasId/detail'),
+        Uri.parse('$baseUrl/kelas/$kelasId'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
@@ -97,7 +101,7 @@ class KelasService {
     }
   }
 
-  // POST - Tambah kelas baru
+  // ===== POST - Tambah kelas baru =====
   static Future<bool> tambahKelas({
     required String namaKelas,
     required String tingkat,
@@ -108,22 +112,27 @@ class KelasService {
     try {
       print('🔄 Posting kelas to: $baseUrl/kelas');
 
+      final body = {
+        'nama_kelas': namaKelas,
+        'tingkat': tingkat,
+        'jurusan': jurusan,
+        'wali_kelas': waliKelas,
+        'kapasitas': kapasitas,
+      };
+
+      print('📤 Request body: ${jsonEncode(body)}');
+
       final res = await http.post(
         Uri.parse('$baseUrl/kelas'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        body: jsonEncode({
-          'nama_kelas': namaKelas,
-          'tingkat': tingkat,
-          'jurusan': jurusan,
-          'wali_kelas': waliKelas,
-          'kapasitas': kapasitas,
-        }),
+        body: jsonEncode(body),
       ).timeout(const Duration(seconds: 10));
 
       print('📥 Response status: ${res.statusCode}');
+      print('📥 Response body: ${res.body}');
 
       return res.statusCode == 201;
     } catch (e) {
@@ -132,7 +141,7 @@ class KelasService {
     }
   }
 
-  // PUT - Update kelas
+  // ===== PUT - Update kelas =====
   static Future<bool> updateKelas({
     required String kelasId,
     required String namaKelas,
@@ -142,6 +151,8 @@ class KelasService {
     int? kapasitas,
   }) async {
     try {
+      print('🔄 Updating kelas: $baseUrl/kelas/$kelasId');
+
       final res = await http.put(
         Uri.parse('$baseUrl/kelas/$kelasId'),
         headers: {
@@ -157,6 +168,8 @@ class KelasService {
         }),
       ).timeout(const Duration(seconds: 10));
 
+      print('📥 Response status: ${res.statusCode}');
+
       return res.statusCode == 200;
     } catch (e) {
       print('❌ Exception: $e');
@@ -164,9 +177,11 @@ class KelasService {
     }
   }
 
-  // DELETE - Hapus kelas
+  // ===== DELETE - Hapus kelas =====
   static Future<bool> deleteKelas(String kelasId) async {
     try {
+      print('🔄 Deleting kelas: $baseUrl/kelas/$kelasId');
+
       final res = await http.delete(
         Uri.parse('$baseUrl/kelas/$kelasId'),
         headers: {
@@ -174,6 +189,8 @@ class KelasService {
           'Content-Type': 'application/json',
         },
       ).timeout(const Duration(seconds: 10));
+
+      print('📥 Response status: ${res.statusCode}');
 
       return res.statusCode == 200;
     } catch (e) {
