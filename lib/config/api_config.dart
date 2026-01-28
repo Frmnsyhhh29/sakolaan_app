@@ -1,18 +1,23 @@
-import 'package:flutter/foundation.dart';
-
 class ApiConfig {
-  static final String baseUrl = kIsWeb
-      ? 'http://localhost:8000/api'
-      : 'http://10.0.2.2:8000/api';
-
+  static const String baseUrl = 'http://192.168.2.166:8000/api';
+  
   // Auth endpoints
-  static final String loginEndpoint = '$baseUrl/login';
-  static final String registerEndpoint = '$baseUrl/register';
-  static final String logoutEndpoint = '$baseUrl/logout';
+  static const String loginEndpoint = '$baseUrl/login';
+  static const String registerEndpoint = '$baseUrl/register';
+  static const String logoutEndpoint = '$baseUrl/logout';
 
   // Siswa endpoints
-  static final String siswaEndpoint = '$baseUrl/siswa';
-
-  // Mapel endpoints (biar sekalian rapi)
-  static final String mapelEndpoint = '$baseUrl/mapel';
+  static const String siswaEndpoint = '$baseUrl/siswa';
+  
+  // Mapel endpoints
+  static const String mapelEndpoint = '$baseUrl/mapel';
+  
+  // Guru endpoints - TAMBAHKAN INI
+  static const String guruEndpoint = '$baseUrl/guru';
+  
+  // Kelas endpoints (jika ada)
+  static const String kelasEndpoint = '$baseUrl/kelas';
+  
+  // Nilai endpoints (jika ada)
+  static const String nilaiEndpoint = '$baseUrl/nilai';
 }

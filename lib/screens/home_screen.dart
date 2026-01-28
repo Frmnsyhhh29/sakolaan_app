@@ -171,7 +171,7 @@ class HomeScreen extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Welcome Baraya',
+                  'We,come Baraya',
                   style: TextStyle(
                     fontSize: isMobile ? 24 : 28,
                     fontWeight: FontWeight.bold,
@@ -227,49 +227,56 @@ class HomeScreen extends ConsumerWidget {
                                 isMobile: isMobile,
                                 icon: Icons.people_outline,
                                 title: 'Data Siswa',
-                                color: Colors.blue.shade600,
+                                color: Colors.green.shade600,
                                 onTap: () => context.go('/siswa'),
                               ),
                               _buildMenuCard(
                                 context,
                                 isMobile: isMobile,
+                                icon: Icons.school_outlined,
+                                title: 'Data Guru',
+                                color: Colors.green.shade600,
+                                onTap: () => context.go('/guru'),
+                              ),
+                              _buildMenuCard(
+                                context,
+                                isMobile: isMobile,
                                 icon: Icons.class_outlined,
-                                title: 'Kelas',
-                                color: Colors.orange.shade600,
-                                onTap: () => context.push('/kelas'),
+                                title: 'Kelazz',
+                                color: Colors.green.shade600,
+                                onTap: () => _showComingSoon(context, 'Jadwal'),
                               ),
                               _buildMenuCard(
                                 context,
                                 isMobile: isMobile,
                                 icon: Icons.menu_book_outlined,
-                                title: 'Mata Pelajaran',
+                                title: 'Mata Pembelajaran',
                                 color: Colors.green.shade600,
-                                onTap: () => context.push('/mapel'),
+                                onTap: () => context.go('/mapel'),
                               ),
                               _buildMenuCard(
                                 context,
                                 isMobile: isMobile,
-                                icon: Icons.calendar_today_outlined,
-                                title: 'Jadwal',
-                                color: Colors.purple.shade600,
-                                onTap: () => _showComingSoon(context, 'Jadwal'),
-                              ),
-                              // ✅ PERBAIKAN: Menu Nilai sekarang navigasi ke /nilai
-                              _buildMenuCard(
-                                context,
-                                isMobile: isMobile,
-                                icon: Icons.assignment_outlined,
+                                icon: Icons.grade_outlined,
                                 title: 'Nilai',
-                                color: Colors.teal.shade600,
-                                onTap: () => context.push('/nilai'), // ✅ DIPERBAIKI
+                                color: Colors.green.shade600,
+                                onTap: () => context.push('/nilai'),
                               ),
                               _buildMenuCard(
                                 context,
                                 isMobile: isMobile,
-                                icon: Icons.settings_outlined,
-                                title: 'Pengaturan',
-                                color: Colors.grey.shade700,
-                                onTap: () => _showComingSoon(context, 'Pengaturan'),
+                                icon: Icons.fact_check_outlined,
+                                title: 'Absensi',
+                                color: Colors.green.shade600,
+                                onTap: () => context.push('/nilai'),
+                              ),
+                              _buildMenuCard(
+                                context,
+                                isMobile: isMobile,
+                                icon: Icons.campaign_outlined,
+                                title: 'Pengumuman',
+                                color: Colors.green.shade600,
+                                onTap: () => context.push('/nilai'),
                               ),
                             ],
                           );
@@ -311,13 +318,11 @@ class HomeScreen extends ConsumerWidget {
                   children: [
                     Icon(icon, size: 32, color: color),
                     const SizedBox(width: 16),
-                    Expanded(
-                      child: Text(
-                        title,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ],
@@ -329,7 +334,6 @@ class HomeScreen extends ConsumerWidget {
                     const SizedBox(height: 16),
                     Text(
                       title,
-                      textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
