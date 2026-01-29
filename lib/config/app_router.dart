@@ -164,12 +164,6 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const GuruTambahPage(),
       ),
 
-      GoRoute(
-        path: '/mapel', 
-        name: 'mapel',
-        builder: (context, state) => const MapelPage(),
-      ),
-
       // ✅ ---------- NILAI ----------
       GoRoute(
         path: '/nilai',

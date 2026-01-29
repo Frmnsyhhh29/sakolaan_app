@@ -243,7 +243,7 @@ class HomeScreen extends ConsumerWidget {
                                 isMobile: isMobile,
                                 icon: Icons.class_outlined,
                                 title: 'Kelas',
-                                color: Colors.orange.shade600,
+                                color: Colors.green.shade600,
                                 onTap: () => context.push('/kelas'),
                               ),
                               _buildMenuCard(
@@ -254,38 +254,14 @@ class HomeScreen extends ConsumerWidget {
                                 color: Colors.green.shade600,
                                 onTap: () => context.push('/mapel'),
                               ),
-                              _buildMenuCard(
-                                context,
-                                isMobile: isMobile,
-                                icon: Icons.class_outlined,
-                                title: 'Kelazz',
-                                color: Colors.green.shade600,
-                                onTap: () => _showComingSoon(context, 'Jadwal'),
-                              ),
                               // ✅ PERBAIKAN: Menu Nilai sekarang navigasi ke /nilai
                               _buildMenuCard(
                                 context,
                                 isMobile: isMobile,
                                 icon: Icons.assignment_outlined,
                                 title: 'Nilai',
-                                color: Colors.teal.shade600,
+                                color: Colors.green.shade600,
                                 onTap: () => context.push('/nilai'), // ✅ DIPERBAIKI
-                              ),
-                              _buildMenuCard(
-                                context,
-                                isMobile: isMobile,
-                                icon: Icons.menu_book_outlined,
-                                title: 'Mata Pembelajaran',
-                                color: Colors.green.shade600,
-                                onTap: () => context.go('/mapel'),
-                              ),
-                              _buildMenuCard(
-                                context,
-                                isMobile: isMobile,
-                                icon: Icons.grade_outlined,
-                                title: 'Nilai',
-                                color: Colors.green.shade600,
-                                onTap: () => context.push('/nilai'),
                               ),
                               _buildMenuCard(
                                 context,
