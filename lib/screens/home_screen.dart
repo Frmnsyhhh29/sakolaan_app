@@ -277,7 +277,7 @@ class HomeScreen extends ConsumerWidget {
                                 icon: Icons.campaign_outlined,
                                 title: 'Pengumuman',
                                 color: Colors.green.shade600,
-                                onTap: () => context.push('/nilai'),
+                                onTap: () => context.push('/pengumuman'),
                               ),
                             ],
                           );
