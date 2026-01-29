@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../providers/nilai_provider.dart';
+import '/providers/nilai_provider.dart';
 
-class NilaiPage extends ConsumerStatefulWidget {
-  const NilaiPage({super.key});
+class NilaiListScreen extends ConsumerStatefulWidget {
+  const NilaiListScreen({super.key});
 
   @override
-  ConsumerState<NilaiPage> createState() => _NilaiPageState();
+  ConsumerState<NilaiListScreen> createState() => _NilaiListScreenState();
 }
 
-class _NilaiPageState extends ConsumerState<NilaiPage> {
+class _NilaiListScreenState extends ConsumerState<NilaiListScreen> {
   String? selectedSemester;
   int? selectedTahun;
 
@@ -78,7 +78,7 @@ class _NilaiPageState extends ConsumerState<NilaiPage> {
                       },
                     ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.pushNamed('nilai-tambah'),
+        onPressed: () => context.push('/nilai/tambah'),
         backgroundColor: Colors.teal.shade600,
         icon: const Icon(Icons.add),
         label: Text(isMobile ? 'Tambah' : 'Tambah Nilai'),
@@ -114,7 +114,7 @@ class _NilaiPageState extends ConsumerState<NilaiPage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: () => context.pushNamed('nilai-detail', pathParameters: {'id': nilai.id.toString()}),
+        onTap: () => context.push('/nilai/detail/${nilai.id}'),
         child: Padding(
           padding: EdgeInsets.all(isMobile ? 12 : 16),
           child: Column(
@@ -240,7 +240,6 @@ class _NilaiPageState extends ConsumerState<NilaiPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         title: const Text('Filter Nilai'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
