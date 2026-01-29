@@ -37,6 +37,8 @@ import 'package:percobaan1/screens/nilai/nilai_tambah_page.dart';
 import 'package:percobaan1/screens/nilai/nilai_detail_page.dart';
 import 'package:percobaan1/screens/nilai/nilai_edit_page.dart';
 
+import 'package:percobaan1/screens/pengumuman.dart';
+
 // SERVICE
 import '../services/storage_service.dart';
 
@@ -212,6 +214,12 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           final nilaiId = state.pathParameters['id']!;
           return NilaiEditPage(nilaiId: nilaiId);
         },
+      ),
+
+      GoRoute(
+        path: '/pengumuman',
+        name: 'pengumuman',
+        builder: (context, state) => const PengumumanScreen(),
       ),
     ],
 
