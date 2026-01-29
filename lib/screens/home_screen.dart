@@ -242,9 +242,9 @@ class HomeScreen extends ConsumerWidget {
                                 context,
                                 isMobile: isMobile,
                                 icon: Icons.class_outlined,
-                                title: 'Kelazz',
+                                title: 'Kelas',
                                 color: Colors.green.shade600,
-                                onTap: () => _showComingSoon(context, 'Jadwal'),
+                                onTap: () => context.go('/kelas'),
                               ),
                               _buildMenuCard(
                                 context,

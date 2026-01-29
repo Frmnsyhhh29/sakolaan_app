@@ -262,7 +262,7 @@ class _SiswaTambahPageState extends ConsumerState<SiswaTambahPage> {
                             ),
                           const SizedBox(height: 20),
                           
-                          // ✅ DROPDOWN JENIS KELAMIN
+                          // ✅ DROPDOWN JENIS KELAMIN - SUDAH DIPERBAIKI!
                           DropdownButtonFormField<String>(
                             value: _selectedJenisKelamin,
                             decoration: InputDecoration(
@@ -277,11 +277,11 @@ class _SiswaTambahPageState extends ConsumerState<SiswaTambahPage> {
                             ),
                             items: const [
                               DropdownMenuItem(
-                                value: 'L',
+                                value: 'Laki-laki',  // ✅ DIGANTI dari 'L' ke 'Laki-laki'
                                 child: Text('Laki-laki'),
                               ),
                               DropdownMenuItem(
-                                value: 'P',
+                                value: 'Perempuan',  // ✅ DIGANTI dari 'P' ke 'Perempuan'
                                 child: Text('Perempuan'),
                               ),
                             ],

@@ -85,7 +85,7 @@ class MapelNotifier extends StateNotifier<MapelState> {
     String? deskripsi,
   }) async {
     try {
-      final success = await MapelService.createMapel(
+      final success = await MapelService.tambahMapel(
         kodeMapel: kodeMapel,
         namaMapel: namaMapel,
         guruPengampu: guruPengampu,
@@ -142,36 +142,6 @@ class MapelNotifier extends StateNotifier<MapelState> {
           mapelList: updatedList,
           errorMessage: null,
         );
-        return true;
-      }
-      return false;
-    } catch (e) {
-      state = state.copyWith(errorMessage: e.toString());
-      return false;
-    }
-  }
-
-  // Assign siswa ke mapel
-  Future<bool> assignSiswa(int mapelId, List<int> siswaIds) async {
-    try {
-      final success = await MapelService.assignSiswa(mapelId, siswaIds);
-      if (success) {
-        await loadMapel();
-        return true;
-      }
-      return false;
-    } catch (e) {
-      state = state.copyWith(errorMessage: e.toString());
-      return false;
-    }
-  }
-
-  // Remove siswa dari mapel
-  Future<bool> removeSiswa(int mapelId, int siswaId) async {
-    try {
-      final success = await MapelService.removeSiswa(mapelId, siswaId);
-      if (success) {
-        await loadMapel();
         return true;
       }
       return false;
