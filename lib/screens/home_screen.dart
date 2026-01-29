@@ -171,7 +171,7 @@ class HomeScreen extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Welcome Baraya',
+                  'We,come Baraya',
                   style: TextStyle(
                     fontSize: isMobile ? 24 : 28,
                     fontWeight: FontWeight.bold,
@@ -243,6 +243,7 @@ class HomeScreen extends ConsumerWidget {
                                 isMobile: isMobile,
                                 icon: Icons.class_outlined,
                                 title: 'Kelas',
+
                                 color: Colors.green.shade600,
                                 onTap: () => context.push('/kelas'),
                               ),
@@ -262,6 +263,9 @@ class HomeScreen extends ConsumerWidget {
                                 title: 'Nilai',
                                 color: Colors.green.shade600,
                                 onTap: () => context.push('/nilai'), // ✅ DIPERBAIKI
+
+                          
+
                               ),
                               _buildMenuCard(
                                 context,
@@ -319,13 +323,11 @@ class HomeScreen extends ConsumerWidget {
                   children: [
                     Icon(icon, size: 32, color: color),
                     const SizedBox(width: 16),
-                    Expanded(
-                      child: Text(
-                        title,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ],
@@ -337,7 +339,6 @@ class HomeScreen extends ConsumerWidget {
                     const SizedBox(height: 16),
                     Text(
                       title,
-                      textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,

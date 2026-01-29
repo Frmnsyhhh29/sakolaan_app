@@ -13,10 +13,10 @@ class _KelasTambahPageState extends State<KelasTambahPage> {
   final _formKey = GlobalKey<FormState>();
 
   final _kelasController = TextEditingController();
-  final _tingkatController = TextEditingController(); // ✅ TAMBAH INI
-  final _jurusanController = TextEditingController(); // ✅ TAMBAH INI
+  final _tingkatController = TextEditingController();
+  final _jurusanController = TextEditingController();
   final _waliController = TextEditingController();
-  final _kapasitasController = TextEditingController(); // ✅ TAMBAH INI (opsional)
+  final _kapasitasController = TextEditingController();
 
   bool _isLoading = false;
 
@@ -30,17 +30,16 @@ class _KelasTambahPageState extends State<KelasTambahPage> {
     super.dispose();
   }
 
-  // ================= SUBMIT KE API =================
+  // Submit ke API
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
 
       try {
-        // ✅ PERBAIKAN: Kirim data sesuai parameter yang ada di KelasService
         final success = await KelasService.tambahKelas(
           namaKelas: _kelasController.text,
-          tingkat: _tingkatController.text,      // ✅ WAJIB
-          jurusan: _jurusanController.text,      // ✅ WAJIB
+          tingkat: _tingkatController.text,
+          jurusan: _jurusanController.text,
           waliKelas: _waliController.text.isEmpty ? null : _waliController.text,
           kapasitas: int.tryParse(_kapasitasController.text),
         );
@@ -85,24 +84,30 @@ class _KelasTambahPageState extends State<KelasTambahPage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 600;
+
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
 
       // ================= APPBAR =================
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.green.shade700,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.green.shade700),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: _isLoading ? null : () => context.pop(),
         ),
-        title: Row(
+        title: const Row(
           children: [
-            Icon(Icons.school, color: Colors.green.shade600),
-            const SizedBox(width: 10),
-            const Text(
-              'Tambah Kelas',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            Icon(Icons.class_, color: Colors.white),
+            SizedBox(width: 10),
+            Text(
+              'Tambah Kelas Baru',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ],
         ),
@@ -112,117 +117,223 @@ class _KelasTambahPageState extends State<KelasTambahPage> {
       body: Stack(
         children: [
           SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // ================= INFO KELAS =================
-                  _card(
-                    title: 'Informasi Kelas',
-                    child: Column(
-                      children: [
-                        _buildField(
-                          controller: _kelasController,
-                          label: 'Nama Kelas',
-                          hint: 'Contoh: X IPA 1',
-                          icon: Icons.class_,
-                          enabled: !_isLoading,
-                          validator: (v) =>
-                              v!.isEmpty ? 'Nama kelas wajib diisi' : null,
-                        ),
-                        const SizedBox(height: 16),
-                        
-                        // ✅ TAMBAH FIELD TINGKAT
-                        _buildField(
-                          controller: _tingkatController,
-                          label: 'Tingkat',
-                          hint: 'Contoh: X, XI, XII',
-                          icon: Icons.stairs,
-                          enabled: !_isLoading,
-                          validator: (v) =>
-                              v!.isEmpty ? 'Tingkat wajib diisi' : null,
-                        ),
-                        const SizedBox(height: 16),
-                        
-                        // ✅ TAMBAH FIELD JURUSAN
-                        _buildField(
-                          controller: _jurusanController,
-                          label: 'Jurusan',
-                          hint: 'Contoh: IPA, IPS, TKJ',
-                          icon: Icons.school_outlined,
-                          enabled: !_isLoading,
-                          validator: (v) =>
-                              v!.isEmpty ? 'Jurusan wajib diisi' : null,
-                        ),
-                        const SizedBox(height: 16),
-                        
-                        _buildField(
-                          controller: _waliController,
-                          label: 'Wali Kelas (Opsional)',
-                          hint: 'Contoh: Bapak Andi',
-                          icon: Icons.person,
-                          enabled: !_isLoading,
-                        ),
-                        const SizedBox(height: 16),
-                        
-                        // ✅ TAMBAH FIELD KAPASITAS
-                        _buildField(
-                          controller: _kapasitasController,
-                          label: 'Kapasitas (Opsional)',
-                          hint: 'Contoh: 32',
-                          icon: Icons.groups,
-                          keyboardType: TextInputType.number,
-                          enabled: !_isLoading,
-                          validator: (v) {
-                            if (v != null && v.isNotEmpty) {
-                              if (int.tryParse(v) == null || int.parse(v) <= 0) {
-                                return 'Kapasitas harus lebih dari 0';
-                              }
-                            }
-                            return null;
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
+            padding: EdgeInsets.all(isMobile ? 16 : 24),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 600),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 8),
 
-                  const SizedBox(height: 32),
-
-                  // ================= BUTTON =================
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: _isLoading ? null : _submit,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green.shade600,
-                        disabledBackgroundColor: Colors.grey.shade400,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      // ================= INFO CARD =================
+                      Card(
+                        elevation: 2,
+                        shadowColor: Colors.green.withOpacity(0.2),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.green.shade50,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Icon(
+                                      Icons.info_outline,
+                                      color: Colors.green.shade700,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  const Expanded(
+                                    child: Text(
+                                      'Informasi Kelas',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+
+                              // Nama Kelas
+                              _buildField(
+                                controller: _kelasController,
+                                label: 'Nama Kelas',
+                                hint: 'Contoh: X IPA 1',
+                                icon: Icons.class_,
+                                enabled: !_isLoading,
+                                validator: (v) =>
+                                    v!.isEmpty ? 'Nama kelas wajib diisi' : null,
+                              ),
+                              const SizedBox(height: 16),
+
+                              // Row Tingkat & Jurusan
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: _buildField(
+                                      controller: _tingkatController,
+                                      label: 'Tingkat',
+                                      hint: 'X, XI, XII',
+                                      icon: Icons.stairs,
+                                      enabled: !_isLoading,
+                                      validator: (v) =>
+                                          v!.isEmpty ? 'Wajib diisi' : null,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: _buildField(
+                                      controller: _jurusanController,
+                                      label: 'Jurusan',
+                                      hint: 'IPA, IPS, TKJ',
+                                      icon: Icons.school_outlined,
+                                      enabled: !_isLoading,
+                                      validator: (v) =>
+                                          v!.isEmpty ? 'Wajib diisi' : null,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+
+                              // Wali Kelas
+                              _buildField(
+                                controller: _waliController,
+                                label: 'Wali Kelas',
+                                hint: 'Nama wali kelas (opsional)',
+                                icon: Icons.person,
+                                enabled: !_isLoading,
+                              ),
+                              const SizedBox(height: 16),
+
+                              // Kapasitas
+                              _buildField(
+                                controller: _kapasitasController,
+                                label: 'Kapasitas Siswa',
+                                hint: 'Contoh: 32 (opsional)',
+                                icon: Icons.groups,
+                                keyboardType: TextInputType.number,
+                                enabled: !_isLoading,
+                                validator: (v) {
+                                  if (v != null && v.isNotEmpty) {
+                                    if (int.tryParse(v) == null || int.parse(v) <= 0) {
+                                      return 'Kapasitas harus lebih dari 0';
+                                    }
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      child: _isLoading
-                          ? const SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.white),
-                              ),
-                            )
-                          : const Text(
-                              'Simpan Kelas',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+
+                      const SizedBox(height: 24),
+
+                      // ================= INFO NOTE =================
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.blue.shade50,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.blue.shade200),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.lightbulb_outline, color: Colors.blue.shade700),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                'Siswa dapat ditambahkan ke kelas ini setelah kelas berhasil dibuat.',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.blue.shade700,
+                                ),
                               ),
                             ),
-                    ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      // ================= BUTTON SIMPAN =================
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: _isLoading ? null : _submit,
+                          icon: _isLoading
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor:
+                                        AlwaysStoppedAnimation<Color>(Colors.white),
+                                  ),
+                                )
+                              : const Icon(Icons.save, color: Colors.white),
+                          label: Text(
+                            _isLoading ? 'Menyimpan...' : 'Simpan Kelas',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green.shade600,
+                            disabledBackgroundColor: Colors.grey.shade400,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            elevation: 2,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // ================= BUTTON BATAL =================
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          onPressed: _isLoading ? null : () => context.pop(),
+                          icon: const Icon(Icons.cancel_outlined),
+                          label: const Text(
+                            'Batal',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: Colors.grey.shade700,
+                            side: BorderSide(color: Colors.grey.shade300),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
@@ -230,17 +341,30 @@ class _KelasTambahPageState extends State<KelasTambahPage> {
           // ================= LOADING OVERLAY =================
           if (_isLoading)
             Container(
-              color: Colors.black.withAlpha(76),
-              child: const Center(
+              color: Colors.black.withAlpha(100),
+              child: Center(
                 child: Card(
+                  elevation: 8,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                   child: Padding(
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(32),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        CircularProgressIndicator(),
-                        SizedBox(height: 16),
-                        Text('Menyimpan data...'),
+                        CircularProgressIndicator(
+                          color: Colors.green.shade600,
+                          strokeWidth: 3,
+                        ),
+                        const SizedBox(height: 20),
+                        const Text(
+                          'Menyimpan data kelas...',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -252,36 +376,7 @@ class _KelasTambahPageState extends State<KelasTambahPage> {
     );
   }
 
-  // ================= CARD =================
-  Widget _card({required String title, required Widget child}) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(13),
-            blurRadius: 12,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 16),
-          child,
-        ],
-      ),
-    );
-  }
-
-  // ================= INPUT =================
+  // ================= INPUT FIELD =================
   Widget _buildField({
     required TextEditingController controller,
     required String label,
@@ -290,23 +385,33 @@ class _KelasTambahPageState extends State<KelasTambahPage> {
     TextInputType keyboardType = TextInputType.text,
     bool enabled = true,
     String? Function(String?)? validator,
-    Function(String)? onChanged,
   }) {
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
       enabled: enabled,
       validator: validator,
-      onChanged: onChanged,
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
-        prefixIcon: Icon(icon),
+        prefixIcon: Icon(icon, color: Colors.green.shade600),
         filled: true,
-        fillColor: enabled ? Colors.grey.shade100 : Colors.grey.shade200,
+        fillColor: enabled ? Colors.grey.shade50 : Colors.grey.shade200,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey.shade300),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey.shade300),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.green.shade600, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Colors.red, width: 1.5),
         ),
       ),
     );

@@ -37,17 +37,19 @@ class Nilai {
 
   factory Nilai.fromJson(Map<String, dynamic> json) {
     return Nilai(
-      id: json['id'],
-      siswaId: json['siswa_id'],
-      mapelId: json['mapel_id'],
-      semester: json['semester'],
-      tahunAjaran: json['tahun_ajaran'],
+      id: json['id'] is String ? int.parse(json['id']) : json['id'],
+      siswaId: json['siswa_id'] is String ? int.parse(json['siswa_id']) : json['siswa_id'],
+      mapelId: json['mapel_id'] is String ? int.parse(json['mapel_id']) : json['mapel_id'],
+      semester: json['semester']?.toString() ?? '',
+      tahunAjaran: json['tahun_ajaran'] is String 
+          ? int.parse(json['tahun_ajaran']) 
+          : json['tahun_ajaran'],
       nilaiTugas: double.parse(json['nilai_tugas'].toString()),
       nilaiUts: double.parse(json['nilai_uts'].toString()),
       nilaiUas: double.parse(json['nilai_uas'].toString()),
       nilaiAkhir: double.parse(json['nilai_akhir'].toString()),
-      grade: json['grade'],
-      catatan: json['catatan'],
+      grade: json['grade']?.toString() ?? '',
+      catatan: json['catatan']?.toString(),
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
       siswa: json['siswa'] != null ? Siswa.fromJson(json['siswa']) : null,
@@ -79,9 +81,9 @@ class Siswa {
   
   factory Siswa.fromJson(Map<String, dynamic> json) {
     return Siswa(
-      id: json['id'],
-      nama: json['nama'],
-      nis: json['nis'],
+      id: json['id'] is String ? int.parse(json['id']) : json['id'],
+      nama: json['nama']?.toString() ?? '',
+      nis: json['nis']?.toString() ?? '',
     );
   }
 }
@@ -95,9 +97,9 @@ class Mapel {
   
   factory Mapel.fromJson(Map<String, dynamic> json) {
     return Mapel(
-      id: json['id'],
-      namaMapel: json['nama_mapel'],
-      kodeMapel: json['kode_mapel'],
+      id: json['id'] is String ? int.parse(json['id']) : json['id'],
+      namaMapel: json['nama_mapel']?.toString() ?? '',
+      kodeMapel: json['kode_mapel']?.toString() ?? '',
     );
   }
 }

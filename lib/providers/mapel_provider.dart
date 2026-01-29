@@ -30,16 +30,14 @@ class MapelState {
 
 // Notifier class untuk mengelola state Mapel
 class MapelNotifier extends StateNotifier<MapelState> {
-  final MapelService _mapelService;
-
-  MapelNotifier(this._mapelService) : super(MapelState());
+  MapelNotifier() : super(MapelState());
 
   // Load semua data mapel
   Future<void> loadMapel() async {
     state = state.copyWith(isLoading: true, errorMessage: null);
 
     try {
-      final mapelList = await _mapelService.getAllMapel();
+      final mapelList = await MapelService.getAllMapel();
       state = state.copyWith(
         mapelList: mapelList,
         isLoading: false,
@@ -56,7 +54,7 @@ class MapelNotifier extends StateNotifier<MapelState> {
   // Refresh data mapel
   Future<void> refreshMapel() async {
     try {
-      final mapelList = await _mapelService.getAllMapel();
+      final mapelList = await MapelService.getAllMapel();
       state = state.copyWith(
         mapelList: mapelList,
         errorMessage: null,
@@ -69,9 +67,9 @@ class MapelNotifier extends StateNotifier<MapelState> {
   }
 
   // Get mapel by ID
-  Future<Mapel?> getMapelById(int id) async {
+  Future<Mapel?> getMapelById(String id) async {
     try {
-      return await _mapelService.getMapelById(id);
+      return await MapelService.getMapelById(id);
     } catch (e) {
       state = state.copyWith(errorMessage: e.toString());
       return null;
@@ -79,11 +77,22 @@ class MapelNotifier extends StateNotifier<MapelState> {
   }
 
   // Tambah mapel baru
-  Future<bool> addMapel(Mapel mapel) async {
+  Future<bool> addMapel({
+    required String kodeMapel,
+    required String namaMapel,
+    required String guruPengampu,
+    required int jamPelajaran,
+    String? deskripsi,
+  }) async {
     try {
-      final success = await _mapelService.createMapel(mapel);
+      final success = await MapelService.tambahMapel(
+        kodeMapel: kodeMapel,
+        namaMapel: namaMapel,
+        guruPengampu: guruPengampu,
+        jamPelajaran: jamPelajaran,
+        deskripsi: deskripsi,
+      );
       if (success) {
-        // Reload data setelah berhasil tambah
         await loadMapel();
         return true;
       }
@@ -95,11 +104,24 @@ class MapelNotifier extends StateNotifier<MapelState> {
   }
 
   // Update mapel
-  Future<bool> updateMapel(int id, Mapel mapel) async {
+  Future<bool> updateMapel({
+    required String mapelId,
+    required String kodeMapel,
+    required String namaMapel,
+    required String guruPengampu,
+    required int jamPelajaran,
+    String? deskripsi,
+  }) async {
     try {
-      final success = await _mapelService.updateMapel(id, mapel);
+      final success = await MapelService.updateMapel(
+        mapelId: mapelId,
+        kodeMapel: kodeMapel,
+        namaMapel: namaMapel,
+        guruPengampu: guruPengampu,
+        jamPelajaran: jamPelajaran,
+        deskripsi: deskripsi,
+      );
       if (success) {
-        // Reload data setelah berhasil update
         await loadMapel();
         return true;
       }
@@ -113,7 +135,7 @@ class MapelNotifier extends StateNotifier<MapelState> {
   // Delete mapel
   Future<bool> deleteMapel(int id) async {
     try {
-      final success = await _mapelService.deleteMapel(id);
+      final success = await MapelService.deleteMapel(id.toString());
       if (success) {
         final updatedList = state.mapelList.where((m) => m.id != id).toList();
         state = state.copyWith(
@@ -129,49 +151,13 @@ class MapelNotifier extends StateNotifier<MapelState> {
     }
   }
 
-  // Assign siswa ke mapel
-  Future<bool> assignSiswa(int mapelId, List<int> siswaIds) async {
-    try {
-      final success = await _mapelService.assignSiswa(mapelId, siswaIds);
-      if (success) {
-        await loadMapel(); // Reload untuk update siswa_count
-        return true;
-      }
-      return false;
-    } catch (e) {
-      state = state.copyWith(errorMessage: e.toString());
-      return false;
-    }
-  }
-
-  // Remove siswa dari mapel
-  Future<bool> removeSiswa(int mapelId, int siswaId) async {
-    try {
-      final success = await _mapelService.removeSiswa(mapelId, siswaId);
-      if (success) {
-        await loadMapel(); // Reload untuk update siswa_count
-        return true;
-      }
-      return false;
-    } catch (e) {
-      state = state.copyWith(errorMessage: e.toString());
-      return false;
-    }
-  }
-
   // Clear error message
   void clearError() {
     state = state.copyWith(errorMessage: null);
   }
 }
 
-// Provider untuk MapelService
-final mapelServiceProvider = Provider<MapelService>((ref) {
-  return MapelService();
-});
-
 // Provider untuk MapelNotifier
 final mapelProvider = StateNotifierProvider<MapelNotifier, MapelState>((ref) {
-  final mapelService = ref.watch(mapelServiceProvider);
-  return MapelNotifier(mapelService);
+  return MapelNotifier();
 });

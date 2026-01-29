@@ -24,7 +24,7 @@ class _SiswaTambahPageState extends ConsumerState<SiswaTambahPage> {
   bool _isLoading = false;
   bool _isLoadingKelas = false;
   
-  // ✅ TAMBAHAN: Untuk dropdown kelas
+  // ✅ Untuk dropdown kelas
   List<Kelas> _kelasList = [];
   String? _selectedKelasId;
   String? _selectedJenisKelamin;
@@ -44,7 +44,7 @@ class _SiswaTambahPageState extends ConsumerState<SiswaTambahPage> {
     super.dispose();
   }
 
-  // ✅ TAMBAHAN: Load data kelas dari API
+  // ✅ Load data kelas dari API
   Future<void> _loadKelas() async {
     setState(() => _isLoadingKelas = true);
     try {
@@ -215,7 +215,7 @@ class _SiswaTambahPageState extends ConsumerState<SiswaTambahPage> {
                           ),
                           const SizedBox(height: 20),
                           
-                          // ✅ DROPDOWN KELAS
+                          // ✅ DROPDOWN KELAS - SUDAH DIPERBAIKI
                           DropdownButtonFormField<String>(
                             value: _selectedKelasId,
                             decoration: InputDecoration(
@@ -232,7 +232,7 @@ class _SiswaTambahPageState extends ConsumerState<SiswaTambahPage> {
                                 ? []
                                 : _kelasList.map((kelas) {
                                     return DropdownMenuItem<String>(
-                                      value: kelas.id,
+                                      value: kelas.id.toString(), // ✅ Convert int ke String
                                       child: Text('${kelas.namaKelas} - ${kelas.jurusan}'),
                                     );
                                   }).toList(),
@@ -262,7 +262,7 @@ class _SiswaTambahPageState extends ConsumerState<SiswaTambahPage> {
                             ),
                           const SizedBox(height: 20),
                           
-                          // ✅ DROPDOWN JENIS KELAMIN
+                          // ✅ DROPDOWN JENIS KELAMIN - SUDAH DIPERBAIKI!
                           DropdownButtonFormField<String>(
                             value: _selectedJenisKelamin,
                             decoration: InputDecoration(
@@ -277,11 +277,11 @@ class _SiswaTambahPageState extends ConsumerState<SiswaTambahPage> {
                             ),
                             items: const [
                               DropdownMenuItem(
-                                value: 'L',
+                                value: 'Laki-laki',  // ✅ DIGANTI dari 'L' ke 'Laki-laki'
                                 child: Text('Laki-laki'),
                               ),
                               DropdownMenuItem(
-                                value: 'P',
+                                value: 'Perempuan',  // ✅ DIGANTI dari 'P' ke 'Perempuan'
                                 child: Text('Perempuan'),
                               ),
                             ],

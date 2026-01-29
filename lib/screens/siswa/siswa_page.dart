@@ -20,8 +20,6 @@ class _SiswaPageState extends ConsumerState<SiswaPage> {
   // ✅ FILTER PER KELAS
   List<Kelas> _kelasList = [];
   String? _selectedKelasFilter;
-  // ✅ HAPUS FIELD YANG TIDAK TERPAKAI
-  // bool _isLoadingKelas = false; ← DIHAPUS
   
   @override
   void initState() {
@@ -40,7 +38,6 @@ class _SiswaPageState extends ConsumerState<SiswaPage> {
 
   // ✅ Load kelas untuk filter
   Future<void> _loadKelas() async {
-    // ✅ HAPUS setState karena _isLoadingKelas dihapus
     try {
       final kelas = await KelasService.getKelas();
       if (mounted) {
@@ -49,8 +46,7 @@ class _SiswaPageState extends ConsumerState<SiswaPage> {
         });
       }
     } catch (e) {
-      // Handle error jika perlu
-      print('Error loading kelas: $e');
+      debugPrint('Error loading kelas: $e');
     }
   }
 
@@ -101,7 +97,7 @@ class _SiswaPageState extends ConsumerState<SiswaPage> {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05), // ✅ PERBAIKI
+                  color: Colors.black.withOpacity(0.05),
                   blurRadius: 10,
                   offset: const Offset(0, 2),
                 ),
@@ -205,7 +201,7 @@ class _SiswaPageState extends ConsumerState<SiswaPage> {
                     
                     const SizedBox(width: 12),
                     
-                    // ✅ FILTER DROPDOWN KELAS - PERBAIKI initialValue
+                    // ✅ FILTER DROPDOWN KELAS - SUDAH DIPERBAIKI
                     Expanded(
                       flex: 1,
                       child: DropdownButtonFormField<String>(
@@ -230,8 +226,8 @@ class _SiswaPageState extends ConsumerState<SiswaPage> {
                           ),
                           ..._kelasList.map((kelas) {
                             return DropdownMenuItem(
-                              value: kelas.id,
-                              child: Text(kelas.displayName),
+                              value: kelas.id.toString(), // ✅ Convert int ke String
+                              child: Text(kelas.namaKelas), // ✅ Gunakan namaKelas
                             );
                           }),
                         ],
@@ -252,7 +248,7 @@ class _SiswaPageState extends ConsumerState<SiswaPage> {
           Expanded(
             child: siswaState.isLoading
                 ? const Center(child: CircularProgressIndicator())
-                : siswaState.hasError // ✅ PERBAIKI: Gunakan hasError
+                : siswaState.hasError
                     ? Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -261,7 +257,7 @@ class _SiswaPageState extends ConsumerState<SiswaPage> {
                                 size: 64, color: Colors.red.shade300),
                             const SizedBox(height: 16),
                             Text(
-                              siswaState.errorMessage ?? 'Terjadi kesalahan', // ✅ PERBAIKI
+                              siswaState.errorMessage ?? 'Terjadi kesalahan',
                               style: TextStyle(color: Colors.grey.shade600),
                             ),
                             const SizedBox(height: 16),
@@ -413,7 +409,6 @@ class _SiswaPageState extends ConsumerState<SiswaPage> {
     );
 
     if (confirm == true && mounted) {
-      // ✅ PERBAIKI: siswa.id sudah String, tidak perlu toString()
       final success = await ref
           .read(siswaProvider.notifier)
           .deleteSiswa(siswa.id!);

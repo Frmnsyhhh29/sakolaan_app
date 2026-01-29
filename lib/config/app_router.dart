@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:percobaan1/screens/guru/guru_page.dart';
 import 'package:percobaan1/screens/guru/guru_tambah_page.dart';
 import 'package:percobaan1/screens/mapel/mapel_page.dart';
@@ -17,6 +18,7 @@ import '../screens/home_screen.dart';
 import '../screens/siswa/siswa_page.dart';
 import '../screens/siswa/siswa_tambah_page.dart';
 import '../screens/siswa/siswa_edit_page.dart';
+import '../screens/siswa/siswa_detail_page.dart';
 
 // KELAS
 import 'package:percobaan1/screens/kelas/kelas_page.dart';
@@ -79,6 +81,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         name: 'register',
         builder: (context, state) => const RegisterScreen(),
       ),
+
+
+      // ======================
+      // PROTECTED ROUTES
+      // ======================
       GoRoute(
         path: '/home',
         name: 'home',
@@ -96,6 +103,16 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/siswa/tambah',
         name: 'siswa-tambah',
         builder: (context, state) => const SiswaTambahPage(),
+      ),
+
+      // Di bagian SISWA, setelah route siswa-tambah
+      GoRoute(
+        path: '/siswa/detail/:id',
+        name: 'siswa-detail',
+        builder: (context, state) {
+          final siswaId = state.pathParameters['id']!;
+          return SiswaDetailPage(siswaId: siswaId);
+        },
       ),
 
       // ✅ PERBAIKAN: Hapus int.parse(), langsung kirim String
@@ -153,6 +170,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       ),
 
       GoRoute(
+
         path: '/guru', 
         name: 'guru',
         builder: (context, state) => const GuruPage(),
@@ -162,6 +180,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/guru/tambah', 
         name: 'guru-tambah',
         builder: (context, state) => const GuruTambahPage(),
+
       ),
 
       // ✅ ---------- NILAI ----------
