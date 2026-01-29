@@ -1,11 +1,12 @@
+import 'package:flutter/foundation.dart';
+
 class ApiConfig {
-  static const String baseUrl = 'http://192.168.2.166:8000/api';
-  
+  static const String baseUrl = 'http://192.168.2.27:8000/api';
   // Auth endpoints
-  static const String loginEndpoint = '$baseUrl/login';
-  static const String registerEndpoint = '$baseUrl/register';
-  static const String logoutEndpoint = '$baseUrl/logout';
-  
+  static final String loginEndpoint = '$baseUrl/login';
+  static final String registerEndpoint = '$baseUrl/register';
+  static final String logoutEndpoint = '$baseUrl/logout';
+
   // Siswa endpoints
   static const String siswaEndpoint = '$baseUrl/siswa';
   static const String guruEndpoint = '$baseUrl/guru';
