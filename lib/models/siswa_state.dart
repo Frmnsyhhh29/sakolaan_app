@@ -1,54 +1,43 @@
 // lib/models/siswa_state.dart
+import 'package:flutter/foundation.dart';
 import 'siswa_model.dart';
 
+@immutable
 class SiswaState {
   final List<Siswa> siswaList;
   final bool isLoading;
   final String? errorMessage;
 
-  SiswaState({
-    required this.siswaList,
+  const SiswaState({
+    this.siswaList = const [],
     this.isLoading = false,
     this.errorMessage,
   });
 
-  // State awal (kosong)
+  // Factory constructors untuk state yang berbeda
   factory SiswaState.initial() {
-    return SiswaState(
-      siswaList: [],
-      isLoading: false,
-      errorMessage: null,
-    );
+    return const SiswaState();
   }
 
-  // State loading
   factory SiswaState.loading() {
-    return SiswaState(
-      siswaList: [],
-      isLoading: true,
-      errorMessage: null,
-    );
+    return const SiswaState(isLoading: true);
   }
 
-  // State dengan data
   factory SiswaState.loaded(List<Siswa> siswaList) {
     return SiswaState(
       siswaList: siswaList,
       isLoading: false,
-      errorMessage: null,
     );
   }
 
-  // State error
   factory SiswaState.error(String message) {
     return SiswaState(
-      siswaList: [],
       isLoading: false,
       errorMessage: message,
     );
   }
 
-  // Copy dengan perubahan
+  // CopyWith untuk update state
   SiswaState copyWith({
     List<Siswa>? siswaList,
     bool? isLoading,
@@ -57,7 +46,11 @@ class SiswaState {
     return SiswaState(
       siswaList: siswaList ?? this.siswaList,
       isLoading: isLoading ?? this.isLoading,
-      errorMessage: errorMessage,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
+
+  // Getter untuk kemudahan akses
+  bool get hasError => errorMessage != null;
+  bool get hasData => siswaList.isNotEmpty;
 }

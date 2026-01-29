@@ -1,63 +1,49 @@
 // lib/models/mapel_model.dart
 class Mapel {
-  final int? id;
+  final int id;
   final String kodeMapel;
   final String namaMapel;
+  final String guruPengampu;
+  final int jamPelajaran;
   final String? deskripsi;
-  final int? siswaCount; // jumlah siswa yang mengambil mapel ini
   final String? createdAt;
   final String? updatedAt;
 
   Mapel({
-    this.id,
+    required this.id,
     required this.kodeMapel,
     required this.namaMapel,
+    required this.guruPengampu,
+    required this.jamPelajaran,
     this.deskripsi,
-    this.siswaCount,
     this.createdAt,
     this.updatedAt,
   });
 
-  // Konversi dari JSON ke Object Mapel
   factory Mapel.fromJson(Map<String, dynamic> json) {
     return Mapel(
-      id: json['id'],
-      kodeMapel: json['kode_mapel'] ?? '',
-      namaMapel: json['nama_mapel'] ?? '',
-      deskripsi: json['deskripsi'],
-      siswaCount: json['siswa_count'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
+
+      id: json['id'] is String ? int.parse(json['id']) : json['id'],
+      kodeMapel: json['kode_mapel']?.toString() ?? '',
+      namaMapel: json['nama_mapel']?.toString() ?? '',
+      guruPengampu: json['guru_pengampu']?.toString() ?? '',
+      jamPelajaran: json['jam_pelajaran'] is String 
+          ? int.parse(json['jam_pelajaran']) 
+          : json['jam_pelajaran'],
+      deskripsi: json['deskripsi']?.toString(),
+      createdAt: json['created_at']?.toString(),
+      updatedAt: json['updated_at']?.toString(),
     );
   }
 
-  // Konversi dari Object Mapel ke JSON
+
   Map<String, dynamic> toJson() {
     return {
       'kode_mapel': kodeMapel,
       'nama_mapel': namaMapel,
+      'guru_pengampu': guruPengampu,
+      'jam_pelajaran': jamPelajaran,
       'deskripsi': deskripsi,
     };
-  }
-
-  // Fungsi untuk membuat copy dengan perubahan tertentu
-  Mapel copyWith({
-    int? id,
-    String? kodeMapel,
-    String? namaMapel,
-    String? deskripsi,
-    int? siswaCount,
-    String? createdAt,
-    String? updatedAt,
-  }) {
-    return Mapel(
-      id: id ?? this.id,
-      kodeMapel: kodeMapel ?? this.kodeMapel,
-      namaMapel: namaMapel ?? this.namaMapel,
-      deskripsi: deskripsi ?? this.deskripsi,
-      siswaCount: siswaCount ?? this.siswaCount,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-    );
   }
 }

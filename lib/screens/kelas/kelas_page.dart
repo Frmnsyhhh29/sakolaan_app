@@ -1,31 +1,26 @@
-// lib/screens/mapel/mapel_page.dart
+// lib/screens/kelas/kelas_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../models/mapel_model.dart';
-import '../../services/mapel_service.dart';
 
-class MapelPage extends ConsumerStatefulWidget {
-  const MapelPage({super.key});
+import '../../models/kelas_model.dart';
+import '../../services/kelas_service.dart';
+
+class KelasPage extends ConsumerStatefulWidget {
+  const KelasPage({super.key});
 
   @override
-  ConsumerState<MapelPage> createState() => _MapelPageState();
+  ConsumerState<KelasPage> createState() => _KelasPageState();
 }
 
-class _MapelPageState extends ConsumerState<MapelPage> {
+class _KelasPageState extends ConsumerState<KelasPage> {
   String _searchQuery = '';
-  late Future<List<Mapel>> _mapelFuture;
+  late Future<List<Kelas>> _kelasFuture;
 
   @override
   void initState() {
     super.initState();
-    _mapelFuture = MapelService.getMapel();
-  }
-
-  void _refreshData() {
-    setState(() {
-      _mapelFuture = MapelService.getMapel();
-    });
+    _kelasFuture = KelasService.getKelas();
   }
 
   @override
@@ -46,10 +41,10 @@ class _MapelPageState extends ConsumerState<MapelPage> {
         ),
         title: Row(
           children: [
-            Icon(Icons.menu_book, color: Colors.green.shade600),
+            Icon(Icons.class_, color: Colors.green.shade600),
             const SizedBox(width: 10),
             const Text(
-              'Daftar Mata Pelajaran',
+              'Daftar Kelas',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ],
@@ -71,7 +66,7 @@ class _MapelPageState extends ConsumerState<MapelPage> {
                       setState(() => _searchQuery = value);
                     },
                     decoration: InputDecoration(
-                      hintText: 'Cari mapel (contoh: Matematika)',
+                      hintText: 'Cari kelas (contoh: X IPA)',
                       prefixIcon:
                           Icon(Icons.search, color: Colors.grey.shade600),
                       filled: true,
@@ -90,8 +85,10 @@ class _MapelPageState extends ConsumerState<MapelPage> {
                 const SizedBox(width: 12),
                 ElevatedButton.icon(
                   onPressed: () async {
-                    await context.push('/mapel/tambah');
-                    _refreshData();
+                    await context.push('/kelas/tambah');
+                    setState(() {
+                      _kelasFuture = KelasService.getKelas();
+                    });
                   },
                   icon: const Icon(Icons.add),
                   label: Text(isMobile ? '' : 'Tambah'),
@@ -112,15 +109,16 @@ class _MapelPageState extends ConsumerState<MapelPage> {
             ),
           ),
 
-
           // ================= CONTENT =================
           Expanded(
-            child: FutureBuilder<List<Mapel>>(
-              future: _mapelFuture,
+            child: FutureBuilder<List<Kelas>>(
+              future: _kelasFuture,
               builder: (context, snapshot) {
                 // LOADING
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
                 }
 
                 // ERROR
@@ -134,27 +132,23 @@ class _MapelPageState extends ConsumerState<MapelPage> {
                 if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return const Center(
                     child: Text(
-                      'Belum ada mata pelajaran',
+                      'Belum ada kelas',
                       style: TextStyle(color: Colors.grey),
                     ),
                   );
                 }
 
                 // FILTER
-                final mapelList = snapshot.data!
-                    .where((m) =>
-                        m.namaMapel
-                            .toLowerCase()
-                            .contains(_searchQuery.toLowerCase()) ||
-                        m.kodeMapel
-                            .toLowerCase()
-                            .contains(_searchQuery.toLowerCase()))
+                final kelasList = snapshot.data!
+                    .where((k) => k.namaKelas
+                        .toLowerCase()
+                        .contains(_searchQuery.toLowerCase()))
                     .toList();
 
-                if (mapelList.isEmpty) {
+                if (kelasList.isEmpty) {
                   return const Center(
                     child: Text(
-                      'Mata pelajaran tidak ditemukan',
+                      'Kelas tidak ditemukan',
                       style: TextStyle(color: Colors.grey),
                     ),
                   );
@@ -162,14 +156,18 @@ class _MapelPageState extends ConsumerState<MapelPage> {
 
                 return ListView.builder(
                   padding: const EdgeInsets.all(16),
-                  itemCount: mapelList.length,
+                  itemCount: kelasList.length,
                   itemBuilder: (context, index) {
-                    final mapel = mapelList[index];
+                    final kelas = kelasList[index];
 
                     return GestureDetector(
                       onTap: () async {
-                        await context.push('/mapel/detail/${mapel.id}');
-                        _refreshData();
+                        // Navigate ke detail kelas
+                        await context.push('/kelas/detail/${kelas.id}');
+                        // Refresh data setelah kembali
+                        setState(() {
+                          _kelasFuture = KelasService.getKelas();
+                        });
                       },
                       child: Container(
                         margin: const EdgeInsets.only(bottom: 14),
@@ -179,7 +177,7 @@ class _MapelPageState extends ConsumerState<MapelPage> {
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withAlpha(13),
+                              color: Colors.black.withOpacity(0.05),
                               blurRadius: 12,
                               offset: const Offset(0, 4),
                             ),
@@ -194,7 +192,7 @@ class _MapelPageState extends ConsumerState<MapelPage> {
                                 borderRadius: BorderRadius.circular(14),
                               ),
                               child: Icon(
-                                Icons.menu_book,
+                                Icons.school,
                                 color: Colors.green.shade600,
                                 size: 28,
                               ),
@@ -205,7 +203,7 @@ class _MapelPageState extends ConsumerState<MapelPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    mapel.namaMapel,
+                                    kelas.namaKelas,
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
@@ -213,7 +211,7 @@ class _MapelPageState extends ConsumerState<MapelPage> {
                                   ),
                                   const SizedBox(height: 6),
                                   Text(
-                                    'Kode: ${mapel.kodeMapel}',
+                                    'Wali Kelas: ${kelas.waliKelas}',
                                     style: TextStyle(
                                       fontSize: 13,
                                       color: Colors.grey.shade700,
@@ -221,17 +219,9 @@ class _MapelPageState extends ConsumerState<MapelPage> {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    'Guru: ${mapel.guruPengampu}',
+                                    '${kelas.jumlahSiswa} siswa',
                                     style: TextStyle(
                                       fontSize: 13,
-                                      color: Colors.grey.shade600,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    '${mapel.jamPelajaran} jam/minggu',
-                                    style: TextStyle(
-                                      fontSize: 12,
                                       color: Colors.grey.shade600,
                                     ),
                                   ),

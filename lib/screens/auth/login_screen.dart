@@ -1,4 +1,3 @@
-// lib/screens/auth/login_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/auth_provider.dart';
@@ -25,9 +24,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   Future<void> _handleLogin() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
+    if (!_formKey.currentState!.validate()) return;
 
     final authNotifier = ref.read(authProvider.notifier);
     final success = await authNotifier.login(
@@ -45,9 +42,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(authState.errorMessage!),
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.red.shade600,
             behavior: SnackBarBehavior.floating,
-            width: 400,
+            width: 420,
           ),
         );
       }
@@ -57,281 +54,276 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isMobile = screenWidth < 600;
+    final width = MediaQuery.of(context).size.width;
+    final isMobile = width < 900;
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Left Side - Illustration/Branding (hidden on mobile)
-                if (!isMobile) ...[
-                  Expanded(
-                    child: Container(
-                      constraints: const BoxConstraints(maxWidth: 500),
-                      padding: const EdgeInsets.all(48),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(
-                            Icons.school,
-                            size: 80,
-                            color: Colors.green.shade600,
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFFF7FAFC),
+              Color(0xFFEFF6F4),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 48),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1200),
+              child: Row(
+                children: [
+                  // ================= HERO / ILLUSTRATION =================
+                  if (!isMobile)
+                    Expanded(
+                      flex: 6,
+                      child: Container(
+                        height: 560,
+                        padding: const EdgeInsets.all(40),
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [
+                              Color(0xFFDFF5F2),
+                              Color(0xFFEAF9F6),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
                           ),
-                          const SizedBox(height: 32),
-                          Text(
-                            'Selamat Datang di',
-                            style: TextStyle(
-                              fontSize: 32,
-                              fontWeight: FontWeight.w300,
-                              color: Colors.grey.shade700,
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Sakolaan App',
+                              style: TextStyle(
+                                fontSize: 34,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 0.5,
+                              ),
                             ),
-                          ),
-                          Text(
-                            'Sakolaan App',
-                            style: TextStyle(
-                              fontSize: 48,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green.shade700,
+                            const SizedBox(height: 12),
+                            Text(
+                              'Kelola data sekolah dengan lebih cepat,\nrapi, dan profesional.',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.grey.shade700,
+                                height: 1.5,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            'Sistem manajemen sekolah yang edan gacor madep madodet and well no rewel',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey.shade600,
-                              height: 1.5,
+                            const Spacer(),
+                            Center(
+                              child: Image.asset(
+                                'assets/images/anakanak.png',
+                                fit: BoxFit.contain,
+                                height: 300,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 48),
-                ],
 
-                // Right Side - Login Form
-                Container(
-                  width: isMobile ? double.infinity : 450,
-                  constraints: const BoxConstraints(maxWidth: 450),
-                  padding: EdgeInsets.all(isMobile ? 24 : 48),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 20,
-                        offset: const Offset(0, 4),
+                  if (!isMobile) const SizedBox(width: 80),
+
+                  // ================= LOGIN CARD =================
+                  Expanded(
+                    flex: 4,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 36,
+                        vertical: 40,
                       ),
-                    ],
-                  ),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // Header
-                        if (isMobile) ...[
-                          Icon(
-                            Icons.school,
-                            size: 60,
-                            color: Colors.green.shade600,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(28),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.08),
+                            blurRadius: 50,
+                            offset: const Offset(0, 24),
                           ),
-                          const SizedBox(height: 16),
                         ],
-                        Text(
-                          'Login',
-                          style: TextStyle(
-                            fontSize: isMobile ? 28 : 32,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey.shade800,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Masuk ke akun Anda untuk melanjutkan',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey.shade600,
-                          ),
-                        ),
-                        const SizedBox(height: 32),
-
-                        // Email Field
-                        TextFormField(
-                          controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                            hintText: 'nama@email.com',
-                            prefixIcon: const Icon(Icons.email_outlined),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Colors.grey.shade300),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Colors.green.shade600, width: 2),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Email tidak boleh kosong';
-                            }
-                            if (!value.contains('@')) {
-                              return 'Email tidak valid';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 20),
-
-                        // Password Field
-                        TextFormField(
-                          controller: _passwordController,
-                          obscureText: _obscurePassword,
-                          decoration: InputDecoration(
-                            labelText: 'Password',
-                            hintText: 'Masukkan password',
-                            prefixIcon: const Icon(Icons.lock_outline),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _obscurePassword
-                                    ? Icons.visibility_off_outlined
-                                    : Icons.visibility_outlined,
+                      ),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text(
+                              'Welcome Back ',
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.w700,
                               ),
-                              onPressed: () {
-                                setState(() {
-                                  _obscurePassword = !_obscurePassword;
-                                });
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Silakan login untuk melanjutkan',
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.grey.shade600,
+                              ),
+                            ),
+                            const SizedBox(height: 36),
+
+                            _InputField(
+                              controller: _emailController,
+                              label: 'Email',
+                              hint: 'nama@email.com',
+                              icon: Icons.email_outlined,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Email tidak boleh kosong';
+                                }
+                                if (!value.contains('@')) {
+                                  return 'Email tidak valid';
+                                }
+                                return null;
                               },
                             ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Colors.grey.shade300),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Colors.green.shade600, width: 2),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Password tidak boleh kosong';
-                            }
-                            if (value.length < 8) {
-                              return 'Password minimal 8 karakter';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 32),
+                            const SizedBox(height: 22),
 
-                        // Login Button
-                        SizedBox(
-                          height: 50,
-                          child: ElevatedButton(
-                            onPressed: authState.isLoading ? null : _handleLogin,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green.shade600,
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                            _InputField(
+                              controller: _passwordController,
+                              label: 'Password',
+                              hint: 'Minimal 8 karakter',
+                              icon: Icons.lock_outline,
+                              obscureText: _obscurePassword,
+                              suffix: IconButton(
+                                icon: Icon(
+                                  _obscurePassword
+                                      ? Icons.visibility_off_outlined
+                                      : Icons.visibility_outlined,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscurePassword = !_obscurePassword;
+                                  });
+                                },
                               ),
-                              elevation: 0,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Password tidak boleh kosong';
+                                }
+                                if (value.length < 8) {
+                                  return 'Password minimal 8 karakter';
+                                }
+                                return null;
+                              },
                             ),
-                            child: authState.isLoading
-                                ? const SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.white,
+                            const SizedBox(height: 36),
+
+                            SizedBox(
+                              width: double.infinity,
+                              height: 52,
+                              child: ElevatedButton(
+                                onPressed:
+                                    authState.isLoading ? null : _handleLogin,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      const Color(0xFF26A69A),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  elevation: 4,
+                                ),
+                                child: authState.isLoading
+                                    ? const CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.white,
+                                      )
+                                    : const Text(
+                                        'Login',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                  )
-                                : const Text(
-                                    'Login',
+                              ),
+                            ),
+                            const SizedBox(height: 28),
+
+                            Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Belum punya akun?',
                                     style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
+                                      color: Colors.grey.shade600,
                                     ),
                                   ),
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-
-                        // Divider
-                        Row(
-                          children: [
-                            Expanded(child: Divider(color: Colors.grey.shade300)),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16),
-                              child: Text(
-                                'atau',
-                                style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                            Expanded(child: Divider(color: Colors.grey.shade300)),
-                          ],
-                        ),
-                        const SizedBox(height: 24),
-
-                        // Link ke Register
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Belum punya akun? ',
-                              style: TextStyle(
-                                color: Colors.grey.shade600,
-                                fontSize: 14,
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                context.go('/register');
-                              },
-                              style: TextButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(horizontal: 8),
-                              ),
-                              child: Text(
-                                'Daftar sekarang',
-                                style: TextStyle(
-                                  color: Colors.green.shade700,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
-                                ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        context.go('/register'),
+                                    child: const Text(
+                                      'Daftar Sekarang',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+// ================= REUSABLE INPUT =================
+class _InputField extends StatelessWidget {
+  final TextEditingController controller;
+  final String label;
+  final String hint;
+  final IconData icon;
+  final bool obscureText;
+  final Widget? suffix;
+  final String? Function(String?)? validator;
+
+  const _InputField({
+    required this.controller,
+    required this.label,
+    required this.hint,
+    required this.icon,
+    this.obscureText = false,
+    this.suffix,
+    this.validator,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      obscureText: obscureText,
+      validator: validator,
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: hint,
+        prefixIcon: Icon(icon),
+        suffixIcon: suffix,
+        filled: true,
+        fillColor: Colors.grey.shade100,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide.none,
         ),
       ),
     );

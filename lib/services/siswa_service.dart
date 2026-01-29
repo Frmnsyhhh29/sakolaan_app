@@ -29,12 +29,17 @@ class SiswaService {
       print('Get Siswa Response: ${response.statusCode}');
       print('Response Body: ${response.body}');
 
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        List<Siswa> siswaList = (data['data'] as List)
-            .map((item) => Siswa.fromJson(item))
-            .toList();
-        return siswaList;
+        if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      print('🔍 API Response: $data'); // ✅ CEK INI
+      
+      List<Siswa> siswaList = (data['data'] as List)
+          .map((item) {
+            print('🔍 Item: $item'); // ✅ CEK INI JUGA
+            return Siswa.fromJson(item);
+        })
+        .toList();
+    return siswaList;
       } else if (response.statusCode == 401) {
         throw Exception('Unauthorized: Token tidak valid');
       } else {

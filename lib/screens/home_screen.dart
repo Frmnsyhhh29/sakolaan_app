@@ -242,25 +242,30 @@ class HomeScreen extends ConsumerWidget {
                                 context,
                                 isMobile: isMobile,
                                 icon: Icons.class_outlined,
-                                title: 'Kelazz',
+                                title: 'Kelas',
+
                                 color: Colors.green.shade600,
-                                onTap: () => _showComingSoon(context, 'Jadwal'),
+                                onTap: () => context.push('/kelas'),
                               ),
                               _buildMenuCard(
                                 context,
                                 isMobile: isMobile,
                                 icon: Icons.menu_book_outlined,
-                                title: 'Mata Pembelajaran',
+                                title: 'Mata Pelajaran',
                                 color: Colors.green.shade600,
-                                onTap: () => context.go('/mapel'),
+                                onTap: () => context.push('/mapel'),
                               ),
+                              // ✅ PERBAIKAN: Menu Nilai sekarang navigasi ke /nilai
                               _buildMenuCard(
                                 context,
                                 isMobile: isMobile,
-                                icon: Icons.grade_outlined,
+                                icon: Icons.assignment_outlined,
                                 title: 'Nilai',
                                 color: Colors.green.shade600,
-                                onTap: () => context.push('/nilai'),
+                                onTap: () => context.push('/nilai'), // ✅ DIPERBAIKI
+
+                          
+
                               ),
                               _buildMenuCard(
                                 context,
@@ -276,7 +281,7 @@ class HomeScreen extends ConsumerWidget {
                                 icon: Icons.campaign_outlined,
                                 title: 'Pengumuman',
                                 color: Colors.green.shade600,
-                                onTap: () => context.push('/nilai'),
+                                onTap: () => context.push('/pengumuman'),
                               ),
                             ],
                           );
